@@ -20,9 +20,9 @@
         </v-list>
       </v-menu>
   
-      <v-btn text @click="goToProductList" class="btn-text">
+      <v-btn text @click="goToMovieList" class="btn-text">
         <v-icon left>mdi-store</v-icon>
-        <span>상품</span>
+        <span>영화</span>
       </v-btn>
       <v-btn text @click="goToBoardList" class="btn-text">
         <v-icon left>mdi-forum</v-icon>
@@ -59,8 +59,8 @@
       goToHome() {
         router.push('/');
       },
-      goToProductList() {
-        router.push('/product/list');
+      goToMovieList() {
+        router.push('/movie/list');
       },
       goToBoardList() {
         router.push('/board/list');
