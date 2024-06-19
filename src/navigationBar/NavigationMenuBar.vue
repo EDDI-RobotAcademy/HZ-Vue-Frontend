@@ -9,34 +9,19 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <v-menu>
-            <template v-slot:activator="{ props }">
-                <v-btn color="white" v-bind="props">
-                    <b>Activator Slot</b>
-                </v-btn>
-            </template>
-            <v-list>
-                <v-list-item
-                    v-for="(item, index) in items"
-                    :key="index"
-                    :value="index"
-                    @click="item.action"
-                >
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu>
-
-        <v-btn text @click="goToMovieList" class="btn-text">
-            <v-icon left>mdi-store</v-icon>
+        <v-btn 
+            prepend-icon="mdi-store"
+            text @click="goToMovieList" class="btn-text">
             <span>영화</span>
         </v-btn>
-        <v-btn text @click="goToBoardList" class="btn-text">
-            <v-icon left>mdi-forum</v-icon>
-            <span>게시판</span>
+        <v-btn 
+            prepend-icon="mdi-forum"
+            text @click="goToBoardList" class="btn-text">
+            <span>구독</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
-            <v-icon left>mdi-login</v-icon>
+        <v-btn 
+            prepend-icon="mdi-login"
+            v-if="!isLogin" text @click="signIn" class="btn-text">
             <span>로그인</span>
         </v-btn>
         <v-btn
