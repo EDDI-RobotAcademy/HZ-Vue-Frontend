@@ -1,22 +1,22 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-import HomeRoutes from '@/home/router/HomeRoutes'
+import HomeRoutes from "@/home/router/HomeRoutes";
 // import BoardRoutes from '@/board/router/BoardRoutes'
-import ProductRoutes from '@/product/router/ProductRoutes'
-// import AccountRoutes from '@/account/router/AccountRoutes'
+import MovieRoutes from "@/movie/router/MovieRoutes";
+import AccountRoutes from "@/account/router/AccountRoutes";
 // import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
 
 const routes: Array<RouteRecordRaw> = [
-  ...HomeRoutes,
-  // ...BoardRoutes,
-  ...ProductRoutes,
-  // ...AccountRoutes,
-  // ...AuthenticationRoutes,
-]
+    ...HomeRoutes,
+    // ...BoardRoutes,
+    ...MovieRoutes,
+    ...AccountRoutes,
+    // ...AuthenticationRoutes,
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
+});
 
-export default router
+export default router;
