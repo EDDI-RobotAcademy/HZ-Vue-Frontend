@@ -44,7 +44,7 @@
             color="red"
             dark
             text
-            @click="signIn"
+            @click="register"
             class="btn-text"
         >
             <span>회원가입</span>
@@ -91,6 +91,9 @@ export default {
         },
         signOut() {
             // Implement sign-out logic
+        },
+        register() {
+            router.push("/account/register");
         },
     },
 };

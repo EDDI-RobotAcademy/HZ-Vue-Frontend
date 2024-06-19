@@ -11,18 +11,17 @@
         </v-card>
 
         <div class="login-wrapper">
-            <div class="login-box">
-                <div
-                    class="login_text"
-                    :style="{ marginBottom: login_flag ? '32px' : '8px' }"
-                >
+            <div>
+                <div :style="{ marginBottom: login_flag ? '32px' : '8px' }">
                     로그인
                 </div>
 
-                <div v-if="login_flag == false" class="login-fail-box">
+                <div v-if="login_flag == false" class="login-error-box">
                     {{ email }}의 비밀번호가 올바르지 않습니다.
                     <br />
-                    비밀번호를 재설정하거나, 다시 시도해 보세요.
+                    비밀번호를 재설정하거나,
+                    <br />
+                    다시 시도해 보세요.
                 </div>
 
                 <v-responsive class="mx-auto" min-width="300" max-width="344">
@@ -35,7 +34,6 @@
                             bg-color="rgba(0, 0, 0, 0.6)"
                             clearable
                             :rules="[email_required]"
-                            class="email-text-field"
                         />
 
                         <v-text-field
@@ -50,7 +48,6 @@
                             "
                             :type="visible ? 'text' : 'password'"
                             @click:append-inner="visible = !visible"
-                            class="password-text-field"
                         />
 
                         <v-btn
@@ -67,6 +64,41 @@
                         </v-btn>
                     </v-form>
                 </v-responsive>
+
+                <v-divider :thickness="2" color="#fff"></v-divider>
+
+                <div>다른 방법으로 로그인하기</div>
+                <div>
+                    <div>
+                        <v-img
+                            src="@/assets/images/fixed/button_kakao_login.png"
+                            width="100%"
+                            height="100%"
+                            class="rounded-circle"
+                        />
+                    </div>
+                    <div>
+                        <v-img
+                            src="@/assets/images/fixed/button_google_login.png"
+                            width="100%"
+                            height="100%"
+                            class="rounded-circle"
+                        />
+                    </div>
+                    <div>
+                        <v-img
+                            src="@/assets/images/fixed/button_naver_login.png"
+                            width="100%"
+                            height="100%"
+                            class="rounded-circle"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <p>Waiting 회원이 아닌가요?</p>
+                    <p v-on:click="goSignUp">이곳을 눌러 지금 가입하세요.</p>
+                </div>
             </div>
         </div>
     </v-container>
@@ -88,6 +120,10 @@ export default {
     methods: {
         goToHome() {
             router.push("/");
+        },
+
+        goSignUp() {
+            router.push("/account/register");
         },
 
         onSubmit() {
@@ -155,33 +191,74 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    > div {
+        padding: 60px 80px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 8px;
+    }
+
+    > div > div:first-child {
+        color: #fff;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .login-error-box {
+        background-color: rgba(39, 54, 108, 1);
+        padding: 16px;
+        margin-bottom: 16px;
+        border-radius: 10px;
+        color: #fff;
+    }
+
+    .v-btn {
+        color: #fff;
+    }
+
+    .v-divider {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    > div > div:nth-last-child(3) {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 8px;
+    }
+
+    > div > div:nth-last-child(2) {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    > div > div > div {
+        width: 38px;
+        height: 38px;
+        cursor: pointer;
+    }
+
+    > div > div:last-child {
+        display: flex;
+        margin-top: 16px;
+
+        > p:first-child {
+            color: rgba(255, 255, 255, 0.5);
+            margin-right: 6px;
+        }
+
+        > p:last-child {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        > p:last-child:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
 }
 
-.login-box {
-    padding: 60px 80px;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 8px;
-}
-
-.login_text {
-    color: #fff;
-    font-size: 32px;
-    font-weight: bold;
-}
-
-.login-fail-box {
-    background-color: rgba(39, 54, 108, 1);
-    padding: 16px;
-    margin-bottom: 16px;
-    border-radius: 10px;
-    color: #fff;
-}
-
-.email-text-field {
-    margin-bottom: 8px;
-}
-
-.password-text-field {
+.v-form .v-text-field {
     margin-bottom: 8px;
 }
 
