@@ -1,5 +1,6 @@
 export interface MovieState {
     movieList: Movie[]
+    movie: Movie | null
 }
 
 export interface Movie {
@@ -18,6 +19,7 @@ export interface Movie {
 
 const state: MovieState = {
     movieList: [],
+    movie: null,
 }
 
 export default state
