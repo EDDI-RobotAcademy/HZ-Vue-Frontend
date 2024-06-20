@@ -2,9 +2,7 @@
     <v-app-bar v-if="hideMenuBar" app dark class="transparent-bar" height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
-                <span class="project-name"
-                    >한조팀 프로젝트 이름이 들어갈자리!</span
-                >
+                <span class="project-name">WAITING</span>
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
@@ -13,6 +11,11 @@
             prepend-icon="mdi-store"
             text @click="goToMovieList" class="btn-text">
             <span>영화</span>
+        </v-btn>
+        <v-btn 
+            prepend-icon="mdi-store"
+            text @click="goToDrinkList" class="btn-text">
+            <span>음료</span>
         </v-btn>
         <v-btn 
             prepend-icon="mdi-forum"
@@ -67,6 +70,9 @@ export default {
         },
         goToMovieList() {
             router.push("/movie/list");
+        },
+        goToDrinkList() {
+            router.push("/drink/list");
         },
         goToBoardList() {
             router.push("/board/list");

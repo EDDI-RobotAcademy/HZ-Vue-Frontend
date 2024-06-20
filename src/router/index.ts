@@ -4,6 +4,7 @@ import HomeRoutes from "@/home/router/HomeRoutes";
 // import BoardRoutes from '@/board/router/BoardRoutes'
 import MovieRoutes from "@/movie/router/MovieRoutes";
 import AccountRoutes from "@/account/router/AccountRoutes";
+import DrinkRoutes from "@/drink/router/DrinkRoutes";
 // import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
 
 const routes: Array<RouteRecordRaw> = [
@@ -11,6 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     // ...BoardRoutes,
     ...MovieRoutes,
     ...AccountRoutes,
+    ...DrinkRoutes
     // ...AuthenticationRoutes,
 ];
 
