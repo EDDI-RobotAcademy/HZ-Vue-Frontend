@@ -8,7 +8,7 @@
         </div>
         <v-row v-if="drinkList.length > 0">
             <v-col v-for="(drink, index) in drinkList" :key=index cols="12" sm="6" md="4" lg="3">
-                <v-card @click="goTodrinkReadPage(drink.drinkId)">
+                <v-card @click="goToDrinkReadPage(drink.drinkId)">
                     <v-img :src="getImageUrl(drink.drinkImage)" aspect-ratio="1" class="grey lighten-2">
                         <template v-slot:placeholder>
                             <v-row class="fill-height ma-0" align="center" justify="center">
