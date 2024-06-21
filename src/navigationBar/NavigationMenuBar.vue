@@ -13,6 +13,11 @@
             <span>영화</span>
         </v-btn>
         <v-btn 
+            prepend-icon="mdi-food"
+            text @click="goToFoodList" class="btn-text">
+            <span>음식</span>
+        </v-btn>
+        <v-btn 
             prepend-icon="mdi-beer"
             text @click="goToDrinkList" class="btn-text">
             <span>음료</span>
@@ -68,6 +73,9 @@ export default {
         },
         goToMovieList() {
             router.push("/movie/list");
+        },
+        goToFoodList() {
+            router.push("/food/list");
         },
         goToDrinkList() {
             router.push("/drink/list");
