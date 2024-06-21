@@ -8,17 +8,17 @@
         <v-spacer></v-spacer>
 
         <v-btn 
-            prepend-icon="mdi-store"
+            prepend-icon="mdi-video-vintage"
             text @click="goToMovieList" class="btn-text">
             <span>영화</span>
         </v-btn>
         <v-btn 
-            prepend-icon="mdi-store"
+            prepend-icon="mdi-beer"
             text @click="goToDrinkList" class="btn-text">
             <span>음료</span>
         </v-btn>
         <v-btn 
-            prepend-icon="mdi-forum"
+            prepend-icon="mdi-currency-usd"
             text @click="goToBoardList" class="btn-text">
             <span>구독</span>
         </v-btn>
@@ -31,10 +31,8 @@
             v-if="!joinMembership"
             color="red"
             dark
-            text
-            @click="register"
-            class="btn-text"
-        >
+            prepend-icon="mdi-account-plus"
+            text @click="register" class="btn-text">
             <span>회원가입</span>
         </v-btn>
         <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
