@@ -7,6 +7,21 @@
         </v-btn>
         <v-spacer></v-spacer>
 
+        <v-menu>
+            <template v-slot:activator="{props}">
+                <v-btn color="white" v-bind="props" prepend-icon="mdi-format-list-bulleted">
+                    <b>상품</b>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item v-for="(move, index) in moves"
+                            :key="index" :value="index" @click="move.action">
+                    <v-list-item-title>{{ move.title }}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+        
+
         <v-btn 
             prepend-icon="mdi-video-vintage"
             text @click="goToMovieList" class="btn-text">
@@ -58,6 +73,11 @@ export default {
             accessToken: null,
             isLogin: false,
             joinMembership: false,
+            moves: [
+                { title: '영화', action: this.goToMovieList },
+                { title: '음식', action: this.goToFoodList },
+                { title: '음료', action: this.goToDrinkList },
+            ]
         };
     },
     computed: {
@@ -69,28 +89,28 @@ export default {
     },
     methods: {
         goToHome() {
-            router.push("/");
+            this.$router.push("/");
         },
         goToMovieList() {
-            router.push("/movie/list");
+            this.$router.push("/movie/list");
         },
         goToFoodList() {
-            router.push("/food/list");
+            this.$router.push("/food/list");
         },
         goToDrinkList() {
-            router.push("/drink/list");
+            this.$router.push("/drink/list");
         },
         goToBoardList() {
-            router.push("/board/list");
+            this.$router.push("/board/list");
         },
         signIn() {
-            router.push("/account/login");
+            this.$router.push("/account/login");
         },
         signOut() {
             // Implement sign-out logic
         },
         register() {
-            router.push("/account/register");
+            this.$router.push("/account/register");
         },
     },
 };
