@@ -1,4 +1,5 @@
-import HomeView from "@/home/pages/HomeView.vue"
+import HomeView from "@/home/pages/main/HomeView.vue"
+import SubscriptionInformation from "@/home/pages/subscription/SubscriptionInformation.vue"
 
 const HomeRoutes = [
     {
