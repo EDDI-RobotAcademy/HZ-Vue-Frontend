@@ -42,10 +42,13 @@
             text @click="goToBoardList" class="btn-text">
             <span>구독</span>
         </v-btn>
-        <v-btn 
-            prepend-icon="mdi-login"
-            v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+            <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
+        </v-btn>
+        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+            <v-icon left>mdi-logout</v-icon>
+            <span>로그아웃</span>
         </v-btn>
         <v-btn
             v-if="!joinMembership"
@@ -54,10 +57,6 @@
             prepend-icon="mdi-account-plus"
             text @click="register" class="btn-text">
             <span>회원가입</span>
-        </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
-            <v-icon left>mdi-logout</v-icon>
-            <span>로그아웃</span>
         </v-btn>
     </v-app-bar>
 </template>
@@ -71,7 +70,7 @@ export default {
         return {
             navigation_drawer: false,
             accessToken: null,
-            isLogin: false,
+            isLogin: !!localStorage.getItem("userToken"),
             joinMembership: false,
             moves: [
                 { title: '영화', action: this.goToMovieList },
@@ -107,11 +106,22 @@ export default {
             this.$router.push("/account/login");
         },
         signOut() {
-            // Implement sign-out logic
+            localStorage.removeItem("userToken")
+            this.updateLoginStatus()
+            router.push('/')
+        },
+        updateLoginStatus () {
+            this.isLogin = !!localStorage.getItem("userToken")
         },
         register() {
             this.$router.push("/account/register");
         },
+    },
+    mounted () {
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeUnmount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
     },
 };
 </script>
