@@ -44,11 +44,11 @@
         <v-alert v-else type="info">현재 등록된 음식이 없습니다!</v-alert>
         <div class="button-container">
             <v-btn color="primary" @click="onPurchase" class="action-button">
-                <v-icon>mdi-cart</v-icon>
+                <v-icon>mdi-foodcart</v-icon>
                 <span class="button-text">구매하기</span>
             </v-btn>
-            <v-btn color="success" @click="onAddToCart" class="action-button">
-                <v-icon>mdi-cart-plus</v-icon>
+            <v-btn color="success" @click="onAddToFoodcart" class="action-button">
+                <v-icon>mdi-foodcart-plus</v-icon>
                 <span class="button-text">장바구니에 추가</span>
             </v-btn>
             <router-link :to="{ name: 'FoodListPage' }" 
@@ -66,7 +66,7 @@
 import { mapActions, mapState } from 'vuex'
 
 const foodModule = 'foodModule'
-const cartModule = 'cartModule'
+const foodcartModule = 'foodcartModule'
 
 export default {
     props: {
@@ -80,21 +80,21 @@ export default {
     },
     methods: {
         ...mapActions(foodModule, ['requestFoodToDjango']),
-        ...mapActions(cartModule, ['requestAddCartToDjango']),
+        ...mapActions(foodcartModule, ['requestAddFoodcartToDjango']),
         async onPurchase () {
             console.log('구매하기 버튼 눌렀음')
         },
-        async onAddToCart () {
+        async onAddToFoodcart () {
             console.log('장바구니에 추가 버튼 눌렀음')
             try {
-                const cartData = {
+                const foodcartData = {
                     foodId: this.food.foodId,
                     foodName: this.food.foodName,
                     foodPrice: this.food.foodPrice,
                     quantity: 1, // 임시로 기본 수량 1로 설정
                 };
-                await this.requestAddCartToDjango(cartData);
-                this.$router.push({ name: 'CartListPage' });
+                await this.requestAddFoodcartToDjango(foodcartData);
+                this.$router.push({ name: 'FoodcartListPage' });
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error);
             }
