@@ -15,7 +15,7 @@
             </template>
             <v-list>
                 <v-list-item v-for="(move, index) in moves"
-                            :key="index" :value="index" @click="move.action">
+                            :key="index" @click="move.action">
                     <v-list-item-title>{{ move.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -42,10 +42,21 @@
             text @click="goToBoardList" class="btn-text">
             <span>구독</span>
         </v-btn>
-        <v-btn 
-            prepend-icon="mdi-login"
-            v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="goToCart" class="btn-text">
+            <v-icon left>mdi-cart</v-icon>
+            <span>장바구니</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="goToOrder" class="btn-text">
+            <v-icon left>mdi-receipt</v-icon>
+            <span>주문</span>
+        </v-btn>
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
+            <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
+            <v-icon left>mdi-logout</v-icon>
+            <span>로그아웃</span>
         </v-btn>
         <v-btn
             v-if="!joinMembership"
@@ -55,28 +66,25 @@
             text @click="register" class="btn-text">
             <span>회원가입</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
-            <v-icon left>mdi-logout</v-icon>
-            <span>로그아웃</span>
-        </v-btn>
     </v-app-bar>
 </template>
 
 <script>
 import "@mdi/font/css/materialdesignicons.css";
 import router from "@/router";
+import { mapActions, mapState } from 'vuex'
+
+const authenticationModule = 'authenticationModule'
 
 export default {
     data() {
         return {
             navigation_drawer: false,
-            accessToken: null,
-            isLogin: false,
             joinMembership: false,
             moves: [
-                { title: '영화', action: this.goToMovieList },
-                { title: '음식', action: this.goToFoodList },
-                { title: '음료', action: this.goToDrinkList },
+                { title: '영화', action: () => {router.push('/movie/list')} },
+                { title: '음식', action: () => {router.push('/food/list')} },
+                { title: '음료', action: () => {router.push('/drink/list')} },
             ]
         };
     },
@@ -86,8 +94,10 @@ export default {
 
             return !hiddenRoutes.includes(this.$route.path);
         },
+        ...mapState(authenticationModule, ['isAuthenticated'])
     },
     methods: {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
         goToHome() {
             this.$router.push("/");
         },
@@ -107,11 +117,18 @@ export default {
             this.$router.push("/account/login");
         },
         signOut() {
-            // Implement sign-out logic
+            this.requestLogoutToDjango()
+            router.push('/')
         },
         register() {
             this.$router.push("/account/register");
         },
+    },
+    mounted () {
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeUnmount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
     },
 };
 </script>
