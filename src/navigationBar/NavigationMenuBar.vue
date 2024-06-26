@@ -145,6 +145,10 @@ export default {
         goToDrinkList() {
             this.$router.push("/drink/list");
         },
+        goToCart() {
+            this.$router.push("/cart/list");
+        },
+        
         goToBoardList() {
             this.$router.push("/board/list");
         },

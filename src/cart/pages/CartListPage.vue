@@ -48,8 +48,7 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
-                </v-card>
-                <v-card>
+               
                     <v-card-title>Shopping Drinkcart</v-card-title>
                     <v-card-text>
                         <v-table>
@@ -92,9 +91,12 @@
                             </v-col>
                             <v-col class="text-right">
                                 <strong>Total: {{ selectedDrinkItemsTotal }}</strong>
-                            </v-col>
+                            </v-col> 
                         </v-row>
-                    </v-card-text>
+                        <v-col class="text-right">
+                                <strong>Real_Total: {{ selectedItemsTotal }}</strong>
+                        </v-col> 
+                    </v-card-text>             
                 </v-card>
             </v-col>
         </v-row>
@@ -166,13 +168,8 @@ export default {
             );
         },
         selectedItemsTotal(){
-            if(!Array.isArray(this.selectedFoodItems) || this.selectedFoodItems.length === 0
-            ||!Array.isArray(this.selectedDrinkItems) || this.selectedDrinkItems.length === 0){
-                return 0;
-            }
-            return this.selectedItems.reduce(
-                (total, food, drink) => total + food.foodPrice * food.quantity + drink.drinkPrice * drink.quantity,
-                0
+            return(
+                this.selectedFoodItemsTotal + this.selectedDrinkItemsTotal          
             );
         }
     },
@@ -186,7 +183,8 @@ export default {
         removeItem(item) {
             this.foodcartItems = this.foodcartItems.filter(foodcartItem => foodcartItem.foodcartItemId !== item.foodcartItemId);
             this.drinkcartItems = this.drinkcartItems.filter(drinkcartItem => drinkcartItem.drinkcartItemId !== item.drinkcartItemId);
-            this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem.foodcartItemId !== item.foodcartItemId);
+            this.selectedFoodItems = this.selectedFoodItems.filter(selectedFoodItem => selectedFoodItem.foodcartItemId !== item.foodcartItemId);
+            this.selectedDrinkItems = this.selectedDrinkItems.filter(selectedDrinkItem => selectedDrinkItem.drinkcartItemId !== item.drinkcartItemId);
         },
         confirmCheckout() {
             this.isCheckoutDialogVisible = true;
