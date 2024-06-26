@@ -6,7 +6,6 @@
                 height="100%"
                 :src="require('@/assets/images/fixed/logo_square.png')"
                 @click="goToHome"
-                class="logo-img"
             />
         </v-card>
 
@@ -33,7 +32,7 @@
                             color="#fff"
                             bg-color="rgba(0, 0, 0, 0.6)"
                             clearable
-                            :rules="[email_required]"
+                            :rules="[emailRequired]"
                         />
 
                         <v-text-field
@@ -42,7 +41,7 @@
                             v-model="password"
                             color="#fff"
                             bg-color="rgba(0, 0, 0,0.6)"
-                            :rules="[password_required]"
+                            :rules="[passwordRequired]"
                             :append-inner-icon="
                                 visible ? 'mdi-eye-off' : 'mdi-eye'
                             "
@@ -97,7 +96,7 @@
 
                 <div>
                     <p>Waiting 회원이 아닌가요?</p>
-                    <p v-on:click="goSignUp">이곳을 눌러 지금 가입하세요.</p>
+                    <p v-on:click="goToSignUp">이곳을 눌러 지금 가입하세요.</p>
                 </div>
             </div>
         </div>
@@ -135,7 +134,7 @@ export default {
             router.push("/");
         },
 
-        goSignUp() {
+        goToSignUp() {
             router.push("/account/register");
         },
 
@@ -157,11 +156,11 @@ export default {
             );
         },
 
-        email_required(v) {
+        emailRequired(v) {
             return !!v || "정확한 이메일 주소를 입력하세요.";
         },
 
-        password_required(v) {
+        passwordRequired(v) {
             return !!v || "비밀번호는 4~60자 사이여야 합니다.";
         },
     },
@@ -187,14 +186,14 @@ export default {
     height: 60px;
     display: inline-block;
     background: transparent;
+
+    .v-img {
+        object-fit: fill;
+        cursor: pointer;
+    }
 }
 
-.logo-img {
-    object-fit: fill;
-    cursor: pointer;
-}
-
->>> .v-img__img--contain {
+:deep(.v-img__img--contain) {
     object-fit: fill !important;
 }
 
@@ -275,19 +274,19 @@ export default {
     margin-bottom: 8px;
 }
 
->>> .v-label.v-field-label {
+:deep(.v-label.v-field-label) {
     color: rgba(255, 255, 255, 0.8) !important;
 }
 
->>> .v-text-field input {
+:deep(.v-text-field input) {
     color: #fff;
 }
 
->>> .mdi-eye::before {
+:deep(.mdi-eye::before) {
     color: rgba(255, 255, 255, 0.8) !important;
 }
 
->>> .mdi-eye-off::before {
+:deep(.mdi-eye-off::before) {
     color: rgba(255, 255, 255, 0.8) !important;
 }
 </style>
