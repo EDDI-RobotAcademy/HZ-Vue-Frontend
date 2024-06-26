@@ -19,7 +19,7 @@
                             <tbody>
                             <tr v-for="item in foodcartItems" :key="item.foodcartItemId">
                                 <td>
-                                    <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
+                                    <v-checkbox v-model="selectedFoodItems" :value="item"></v-checkbox>
                                 </td>
                                 <td>{{ item.foodName }}</td>
                                 <td>{{ item.foodPrice }}</td>
@@ -44,7 +44,54 @@
                                 <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
                             </v-col>
                             <v-col class="text-right">
-                                <strong>Total: {{ selectedItemsTotal }}</strong>
+                                <strong>Total: {{ selectedFoodItemsTotal }}</strong>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+                <v-card>
+                    <v-card-title>Shopping Drinkcart</v-card-title>
+                    <v-card-text>
+                        <v-table>
+                            <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Drink</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in drinkcartItems" :key="item.drinkcartItemId">
+                                <td>
+                                    <v-checkbox v-model="selectedDrinkItems" :value="item"></v-checkbox>
+                                </td>
+                                <td>{{ item.drinkName }}</td>
+                                <td>{{ item.drinkPrice }}</td>
+                                <td>
+                                    <v-text-field
+                                        v-model="item.quantity"
+                                        type="number"
+                                        min="1"
+                                        @change="updateQuantity(item)"
+                                    ></v-text-field>
+                                </td>
+                                <td>{{ item.drinkPrice * item.quantity }}</td>
+                                <td>
+                                    <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </v-table>
+                        <v-divider></v-divider>
+                        <v-row>
+                            <v-col>
+                                <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
+                            </v-col>
+                            <v-col class="text-right">
+                                <strong>Total: {{ selectedDrinkItemsTotal }}</strong>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -74,6 +121,9 @@ export default {
     data() {
         return {
             foodcartItems: [],
+            drinkcartItems: [],
+            selectedFoodItems: [],
+            selectedDrinkItems: [],
             selectedItems: [],
             isCheckoutDialogVisible: false,
         };
@@ -84,27 +134,58 @@ export default {
                 return 0;
             }
             return this.foodcartItems.reduce(
-                (total, item) => total + item.foodPrice * item.quantity,
+                (total, food) => total + food.foodPrice * food.quantity,
                 0
             );
         },
-        selectedItemsTotal() {
-            if (!Array.isArray(this.selectedItems) || this.selectedItems.length === 0) {
+        drinkcartTotal() {
+            if (!Array.isArray(this.drinkcartItems) || this.drinkcartItems.length === 0) {
+                return 0;
+            }
+            return this.drinkcartItems.reduce(
+                (total, drink) => total + drink.drinkPrice * drink.quantity,
+                0
+            );
+        },
+        selectedFoodItemsTotal() {
+            if (!Array.isArray(this.selectedFoodItems) || this.selectedFoodItems.length === 0) {
+                return 0;
+            }
+            return this.selectedFoodItems.reduce(
+                (total, food) => total + food.foodPrice * food.quantity ,
+                0
+            );
+        },
+        selectedDrinkItemsTotal() {
+            if (!Array.isArray(this.selectedDrinkItems) || this.selectedDrinkItems.length === 0) {
+                return 0;
+            }
+            return this.selectedDrinkItems.reduce(
+                (total, drink) => total + drink.drinkPrice * drink.quantity ,
+                0
+            );
+        },
+        selectedItemsTotal(){
+            if(!Array.isArray(this.selectedFoodItems) || this.selectedFoodItems.length === 0
+            ||!Array.isArray(this.selectedDrinkItems) || this.selectedDrinkItems.length === 0){
                 return 0;
             }
             return this.selectedItems.reduce(
-                (total, item) => total + item.foodPrice * item.quantity,
+                (total, food, drink) => total + food.foodPrice * food.quantity + drink.drinkPrice * drink.quantity,
                 0
             );
-        },
+        }
     },
     methods: {
-        ...mapActions("foodcartModule", ["requestFoodcartListToDjango"]),
+        ...mapActions("cartModule", ["requestFoodcartListToDjango"]),
+        ...mapActions("cartModule", ["requestDrinkcartListToDjango"]),
+        
         updateQuantity(item) {
             // 수량 업데이트 로직
         },
         removeItem(item) {
             this.foodcartItems = this.foodcartItems.filter(foodcartItem => foodcartItem.foodcartItemId !== item.foodcartItemId);
+            this.drinkcartItems = this.drinkcartItems.filter(drinkcartItem => drinkcartItem.drinkcartItemId !== item.drinkcartItemId);
             this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem.foodcartItemId !== item.foodcartItemId);
         },
         confirmCheckout() {
@@ -123,9 +204,18 @@ export default {
                 console.error("Error fetching foodcart list:", error);
             }
         },
+        async fetchDrinkcartList() {
+            try {
+                const response = await this.requestDrinkcartListToDjango();
+                this.drinkcartItems = response;
+            } catch (error) {
+                console.error("Error fetching drinkcart list:", error);
+            }
+        },
     },
     created() {
         this.fetchFoodcartList();
+        this.fetchDrinkcartList();
     },
 };
 </script>

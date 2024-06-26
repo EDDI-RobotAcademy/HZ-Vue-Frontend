@@ -5,7 +5,7 @@ import drinkModule from "@/drink/store/drinkModule";
 import foodModule from "@/food/store/foodModule";
 import authenticationModule from "@/authentication/store/authenticationModule";
 import accountModule from "@/account/store/accountModule";
-import foodcartModule from "@/foodcart/store/foodcartModule";
+import cartModule from "@/cart/store/cartModule";
 // import authenticationModule from "@/authentication/store/authenticationModule"
 // import accountModule from "@/account/store/accountModule";
 
@@ -21,7 +21,7 @@ export default createStore({
         movieModule,
         drinkModule,
         foodModule,
-        foodcartModule
+        cartModule,
         // authenticationModule,
         // accountModule,
     },

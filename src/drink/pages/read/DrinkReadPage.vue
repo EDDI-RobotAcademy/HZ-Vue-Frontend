@@ -80,20 +80,20 @@ export default {
     },
     methods: {
         ...mapActions(drinkModule, ['requestDrinkToDjango']),
-        ...mapActions(cartModule, ['requestAddCartToDjango']),
+        ...mapActions(cartModule, ['requestAddDrinkcartToDjango']),
         async onPurchase () {
             console.log('구매하기 버튼 눌렀음')
         },
         async onAddToCart () {
             console.log('장바구니에 추가 버튼 눌렀음')
             try {
-                const cartData = {
+                const drinkcartData = {
                     drinkId: this.drink.drinkId,
                     drinkName: this.drink.drinkName,
                     drinkPrice: this.drink.drinkPrice,
                     quantity: 1, // 임시로 기본 수량 1로 설정
                 };
-                await this.requestAddCartToDjango(cartData);
+                await this.requestAddDrinkcartToDjango(drinkcartData);
                 this.$router.push({ name: 'CartListPage' });
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error);
