@@ -1,29 +1,28 @@
 <template>
-    <div class="homeView">
-        <p>여기는 메인페이지 입니다 네비바에서 회원가입 및 로그인을 합니다</p>
-    </div>
+    <main-1-page />
+    <main-2-page />
+    <main-3-page />
+    <main-4-page />
+    <main-5-page />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Main1Page from "../main1/Main1Page.vue";
+import Main2Page from "../main2/Main2Page.vue";
+import Main3Page from "../main3/Main3Page.vue";
+import Main4Page from "../main4/Main4Page.vue";
+import Main5Page from "../main5/Main5Page.vue";
 
 export default defineComponent({
     name: "HomeView",
 
-    components: {},
+    components: { Main1Page, Main2Page, Main3Page, Main4Page, Main5Page },
 });
 </script>
 
 <style scoped>
-.homeView {
-    background-color: rgb(33, 33, 33);
-    color: white;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url("@/assets/background_image/main_image.png");
-    background-size: cover;
-    background-position: center;
+div {
+    height: calc(100vh - 64px);
 }
 </style>
