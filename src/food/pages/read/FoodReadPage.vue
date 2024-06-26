@@ -47,7 +47,7 @@
                 <v-icon>mdi-foodcart</v-icon>
                 <span class="button-text">구매하기</span>
             </v-btn>
-            <v-btn color="success" @click="onAddToFoodcart" class="action-button">
+            <v-btn color="success" @click="onAddToCart" class="action-button">
                 <v-icon>mdi-foodcart-plus</v-icon>
                 <span class="button-text">장바구니에 추가</span>
             </v-btn>
@@ -66,7 +66,7 @@
 import { mapActions, mapState } from 'vuex'
 
 const foodModule = 'foodModule'
-const foodcartModule = 'foodcartModule'
+const cartModule = 'cartModule'
 
 export default {
     props: {
@@ -80,11 +80,11 @@ export default {
     },
     methods: {
         ...mapActions(foodModule, ['requestFoodToDjango']),
-        ...mapActions(foodcartModule, ['requestAddFoodcartToDjango']),
+        ...mapActions(cartModule, ['requestAddFoodcartToDjango']),
         async onPurchase () {
             console.log('구매하기 버튼 눌렀음')
         },
-        async onAddToFoodcart () {
+        async onAddToCart () {
             console.log('장바구니에 추가 버튼 눌렀음')
             try {
                 const foodcartData = {
@@ -94,7 +94,7 @@ export default {
                     quantity: 1, // 임시로 기본 수량 1로 설정
                 };
                 await this.requestAddFoodcartToDjango(foodcartData);
-                this.$router.push({ name: 'FoodcartListPage' });
+                this.$router.push({ name: 'CartListPage' });
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error);
             }
