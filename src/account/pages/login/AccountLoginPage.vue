@@ -4,7 +4,7 @@
             <v-img
                 width="100%"
                 height="100%"
-                :src="require('@/assets/images/fixed/logo_square.png')"
+                :src="require('@/assets/images/fixed/logo_waiting.png')"
                 @click="goToHome"
             />
         </v-card>
@@ -74,7 +74,8 @@
                             width="100%"
                             height="100%"
                             class="rounded-circle"
-                            @click="goToKakaoLogin"/>
+                            @click="goToKakaoLogin"
+                        />
                     </div>
                     <div>
                         <v-img
@@ -105,7 +106,7 @@
 
 <script>
 import router from "@/router";
-import { useStore } from "vuex"
+import { useStore } from "vuex";
 
 export default {
     data: () => ({
@@ -117,16 +118,18 @@ export default {
         login_flag: true,
     }),
 
-    setup () {
-        const store = useStore()
+    setup() {
+        const store = useStore();
 
         const goToKakaoLogin = async () => {
-            await store.dispatch("authenticationModule/requestKakaoOauthRedirectionToDjango")
-        }
+            await store.dispatch(
+                "authenticationModule/requestKakaoOauthRedirectionToDjango"
+            );
+        };
 
         return {
-            goToKakaoLogin
-        }
+            goToKakaoLogin,
+        };
     },
 
     methods: {
