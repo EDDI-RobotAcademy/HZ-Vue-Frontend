@@ -53,7 +53,7 @@
         <v-btn
             prepend-icon="mdi-currency-usd"
             text
-            @click="goToBoardList"
+            @click="goToSubscriptionList"
             class="btn-text"
         >
             <span>구독</span>
@@ -65,6 +65,10 @@
         <v-btn v-if="isAuthenticated" text @click="goToOrder" class="btn-text">
             <v-icon left>mdi-receipt</v-icon>
             <span>주문</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="goToSubscriptionList" class="btn-text">
+            <v-icon left>mdi-currency-usd</v-icon>
+            <span>구독</span>
         </v-btn>
         <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
@@ -147,6 +151,9 @@ export default {
         },
         goToBoardList() {
             this.$router.push("/board/list");
+        },
+        goToSubscriptionList() {
+            this.$router.push("/subscription/list")
         },
         signIn() {
             this.$router.push("/account/login");
