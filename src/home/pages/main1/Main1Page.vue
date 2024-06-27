@@ -13,7 +13,7 @@
                 사용할 준비가 되셨나요 ? 구독권을 구매하고 무제한으로 즐겨보세요
                 !
             </p>
-            <v-btn variant="tonal" size="x-large" class="button">
+            <v-btn variant="tonal" size="x-large" class="button" @click="goToSubscriptionList">
                 구독권 구매
             </v-btn>
         </div>
@@ -25,6 +25,11 @@ export default {
     data: () => ({
         src: require("@/assets/images/fixed/logo_waiting.png"),
     }),
+    methods: {
+        goToSubscriptionList() {
+            this.$router.push("/subscription/list")
+        },
+    }
 };
 </script>
 
