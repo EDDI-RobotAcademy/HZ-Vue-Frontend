@@ -60,3 +60,4 @@ export default {
     background-color: rgb(28, 28, 218);
 }
 </style>
+``
