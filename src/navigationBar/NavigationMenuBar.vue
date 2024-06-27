@@ -7,7 +7,7 @@
 
         <v-menu>
             <template v-slot:activator="{ props }">
-                <v-btn
+                <v-btn v-if="isAuthenticated"
                     color="white"
                     v-bind="props"
                     prepend-icon="mdi-format-list-bulleted"
@@ -26,7 +26,7 @@
             </v-list>
         </v-menu>
 
-        <v-btn
+        <!-- <v-btn
             prepend-icon="mdi-video-vintage"
             text
             @click="goToMovieList"
@@ -49,8 +49,8 @@
             class="btn-text"
         >
             <span>음료</span>
-        </v-btn>
-        <v-btn
+        </v-btn> -->
+        <v-btn v-if="isAuthenticated"
             prepend-icon="mdi-currency-usd"
             text
             @click="goToSubscriptionList"
@@ -79,7 +79,7 @@
             <span>로그아웃</span>
         </v-btn>
         <v-btn
-            v-if="!joinMembership"
+            v-if="!isAuthenticated"
             color="red"
             dark
             prepend-icon="mdi-account-plus"
@@ -149,6 +149,10 @@ export default {
         goToDrinkList() {
             this.$router.push("/drink/list");
         },
+        goToCart() {
+            this.$router.push("/cart/list");
+        },
+        
         goToBoardList() {
             this.$router.push("/board/list");
         },

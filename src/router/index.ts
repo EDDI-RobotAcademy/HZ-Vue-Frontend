@@ -7,8 +7,9 @@ import AccountRoutes from "@/account/router/AccountRoutes";
 import DrinkRoutes from "@/drink/router/DrinkRoutes";
 import FoodRoutes from "@/food/router/FoodRoutes";
 import AuthenticationRoutes from "@/authentication/router/AuthenticationRoutes";
-import FoodcartRoutes from "@/foodcart/router/FoodcartRoutes";
+import CartRoutes from "@/cart/router/CartRoutes";
 import SubscriptionRoutes from "@/subscription/router/SubscriptionRoutes";
+
 // import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
 
 const routes: Array<RouteRecordRaw> = [
@@ -19,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     ...AuthenticationRoutes,
     ...DrinkRoutes,
     ...FoodRoutes,
-    ...FoodcartRoutes,
+    ...CartRoutes,
     // ...AuthenticationRoutes,
     ...SubscriptionRoutes,
 ];
