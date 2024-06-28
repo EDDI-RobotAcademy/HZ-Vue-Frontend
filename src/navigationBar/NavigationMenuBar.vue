@@ -171,7 +171,13 @@ export default {
         },
     },
     mounted() {
-        window.addEventListener("storage", this.updateLoginStatus);
+        console.log('navigation bar mounted()')
+        
+        const userToken = localStorage.getItem("userToken")
+        if (userToken) {
+            console.log('You already has a userToken!!!')
+            this.$store.state.authenticationModule.isAuthenticated = true
+        }
     },
     beforeUnmount() {
         window.removeEventListener("storage", this.updateLoginStatus);

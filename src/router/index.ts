@@ -9,6 +9,7 @@ import FoodRoutes from "@/food/router/FoodRoutes";
 import AuthenticationRoutes from "@/authentication/router/AuthenticationRoutes";
 import CartRoutes from "@/cart/router/CartRoutes";
 import SubscriptionRoutes from "@/subscription/router/SubscriptionRoutes";
+import OrderRoutes from "@/order/router/OrderRoutes";
 
 // import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
 
@@ -23,6 +24,7 @@ const routes: Array<RouteRecordRaw> = [
     ...CartRoutes,
     // ...AuthenticationRoutes,
     ...SubscriptionRoutes,
+    ...OrderRoutes
 ];
 
 const router = createRouter({

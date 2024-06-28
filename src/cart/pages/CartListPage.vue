@@ -40,9 +40,6 @@
                         </v-table>
                         <v-divider></v-divider>
                         <v-row>
-                            <v-col>
-                                <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
-                            </v-col>
                             <v-col class="text-right">
                                 <strong>Total: {{ selectedFoodItemsTotal }}</strong>
                             </v-col>
@@ -86,16 +83,18 @@
                         </v-table>
                         <v-divider></v-divider>
                         <v-row>
-                            <v-col>
-                                <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
-                            </v-col>
                             <v-col class="text-right">
                                 <strong>Total: {{ selectedDrinkItemsTotal }}</strong>
                             </v-col> 
                         </v-row>
-                        <v-col class="text-right">
-                                <strong>Real_Total: {{ selectedItemsTotal }}</strong>
-                        </v-col> 
+                        <v-row>
+                            <v-col class="text-right">
+                                    <strong>Real_Total: {{ selectedItemsTotal }}</strong>
+                            </v-col> 
+                            <v-col>
+                                <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
+                            </v-col>
+                        </v-row>
                     </v-card-text>             
                 </v-card>
             </v-col>
@@ -117,6 +116,10 @@
 
 <script>
 import { mapActions } from "vuex";
+
+const cartModule = 'cartModule'
+const orderModule = 'orderModule'
+
 import router from "@/router"; // Assuming you have a router set up
 
 export default {
@@ -176,6 +179,8 @@ export default {
     methods: {
         ...mapActions("cartModule", ["requestFoodcartListToDjango"]),
         ...mapActions("cartModule", ["requestDrinkcartListToDjango"]),
+        ...mapActions("orderModule", ["requestCreateFoodorderToDjango"]),
+        ...mapActions("orderModule", ["requestCreateDrinkorderToDjango"]),
         
         updateQuantity(item) {
             // 수량 업데이트 로직
@@ -191,8 +196,39 @@ export default {
         },
         async proceedToOrder() {
             this.isCheckoutDialogVisible = false;
-            const response = await this.requestCreateOrderToDjango()
-            router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
+
+            console.log('foodcartItems:', this.foodcartItems);
+            console.log('selectedFoodItems:', this.selectedFoodItems);
+            console.log('drinkcartItems:', this.drinkcartItems);
+            console.log('selectedDrinkItems:', this.selectedDrinkItems);
+            // const response = await this.requestCreateOrderToDjango()
+
+            try {
+                const selectedFoodcartItems = this.foodcartItems.filter(item => this.selectedFoodItems.includes(item));
+                const foodorderItems = selectedFoodcartItems.map(item => ({
+                    foodcartItemId: item.foodcartItemId,
+                    foodorderPrice: item.foodPrice,
+                    quantity: item.quantity
+                }));
+                const selectedDrinkcartItems = this.drinkcartItems.filter(item => this.selectedDrinkItems.includes(item));
+                const drinkorderItems = selectedDrinkcartItems.map(item => ({
+                    drinkcartItemId: item.drinkcartItemId,
+                    drinkorderPrice: item.drinkPrice,
+                    quantity: item.quantity
+                }));
+                console.log('foodorderItems:', foodorderItems)
+                console.log('drinkorderItems:', drinkorderItems)
+                const foodorderId = await this.requestCreateFoodorderToDjango({ items: foodorderItems });
+                const drinkorderId = await this.requestCreateDrinkorderToDjango({ items: drinkorderItems });
+                // const orderId = response.orderId;
+
+                this.$router.push({ name: 'OrderReadPage', params: { foodorderId: foodorderId.toString(), drinkorderId: drinkorderId.toString() } });
+
+            } catch (error) {
+                console.error('Order creation failed:', error);
+            }
+
+            // this.$router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
         },
         async fetchFoodcartList() {
             try {

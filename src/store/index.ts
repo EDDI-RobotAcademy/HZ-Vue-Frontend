@@ -6,6 +6,7 @@ import foodModule from "@/food/store/foodModule";
 import authenticationModule from "@/authentication/store/authenticationModule";
 import accountModule from "@/account/store/accountModule";
 import cartModule from "@/cart/store/cartModule";
+import orderModule from "@/order/store/orderModule";
 // import authenticationModule from "@/authentication/store/authenticationModule"
 // import accountModule from "@/account/store/accountModule";
 
@@ -22,6 +23,7 @@ export default createStore({
         drinkModule,
         foodModule,
         cartModule,
+        orderModule,
         // authenticationModule,
         // accountModule,
     },
