@@ -23,7 +23,7 @@
                     다시 시도해 보세요.
                 </div>
 
-                <v-responsive class="mx-auto" min-width="300" max-width="344">
+                <v-responsive class="mx-auto" min-width="300">
                     <v-form v-model="form" @submit.prevent="onSubmit">
                         <v-text-field
                             label="이메일 주소"
@@ -200,41 +200,37 @@ export default {
     object-fit: fill !important;
 }
 
+.login-wrapper > div {
+    padding: 60px 80px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+}
+
+.login-wrapper > div > div:first-child {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.login-wrapper > div > .login-error-box {
+    background-color: rgba(39, 54, 108, 1);
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.login-wrapper > div > .v-divider {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 .login-wrapper {
     height: calc(100% - 160px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    > div {
-        padding: 60px 80px;
-        background-color: rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
-    }
-
-    > div > div:first-child {
-        color: #fff;
-        font-size: 32px;
-        font-weight: bold;
-    }
-
-    .login-error-box {
-        background-color: rgba(39, 54, 108, 1);
-        padding: 16px;
-        margin-bottom: 16px;
-        border-radius: 10px;
-        color: #fff;
-    }
-
-    .v-btn {
-        color: #fff;
-    }
-
-    .v-divider {
-        margin-top: 8px;
-        margin-bottom: 8px;
-    }
 
     > div > div:nth-last-child(3) {
         font-size: 12px;
@@ -244,7 +240,7 @@ export default {
 
     > div > div:nth-last-child(2) {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
     }
 
     > div > div > div {
