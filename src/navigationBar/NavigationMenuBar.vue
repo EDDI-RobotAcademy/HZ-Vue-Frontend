@@ -7,7 +7,8 @@
 
         <v-menu>
             <template v-slot:activator="{ props }">
-                <v-btn v-if="isAuthenticated"
+                <v-btn
+                    v-if="isAuthenticated"
                     color="white"
                     v-bind="props"
                     prepend-icon="mdi-format-list-bulleted"
@@ -26,31 +27,8 @@
             </v-list>
         </v-menu>
 
-        <!-- <v-btn
-            prepend-icon="mdi-video-vintage"
-            text
-            @click="goToMovieList"
-            class="btn-text"
-        >
-            <span>영화</span>
-        </v-btn>
         <v-btn
-            prepend-icon="mdi-food"
-            text
-            @click="goToFoodList"
-            class="btn-text"
-        >
-            <span>음식</span>
-        </v-btn>
-        <v-btn
-            prepend-icon="mdi-beer"
-            text
-            @click="goToDrinkList"
-            class="btn-text"
-        >
-            <span>음료</span>
-        </v-btn> -->
-        <v-btn v-if="isAuthenticated"
+            v-if="isAuthenticated"
             prepend-icon="mdi-currency-usd"
             text
             @click="goToSubscriptionList"
@@ -58,24 +36,40 @@
         >
             <span>구독</span>
         </v-btn>
-        <v-btn v-if="isAuthenticated" text @click="goToCart" class="btn-text">
-            <v-icon left>mdi-cart</v-icon>
+        <v-btn
+            v-if="isAuthenticated"
+            prepend-icon="mdi-cart"
+            text
+            @click="goToCart"
+            class="btn-text"
+        >
             <span>장바구니</span>
         </v-btn>
-        <v-btn v-if="isAuthenticated" text @click="goToOrder" class="btn-text">
-            <v-icon left>mdi-receipt</v-icon>
+        <v-btn
+            v-if="isAuthenticated"
+            prepend-icon="mdi-receipt"
+            text
+            @click="goToOrder"
+            class="btn-text"
+        >
             <span>주문</span>
         </v-btn>
-        <v-btn v-if="isAuthenticated" text @click="goToSubscriptionList" class="btn-text">
-            <v-icon left>mdi-currency-usd</v-icon>
-            <span>구독</span>
-        </v-btn>
-        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
-            <v-icon left>mdi-login</v-icon>
+        <v-btn
+            v-if="!isAuthenticated"
+            prepend-icon="mdi-login"
+            text
+            @click="signIn"
+            class="btn-text"
+        >
             <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
-            <v-icon left>mdi-logout</v-icon>
+        <v-btn
+            v-if="isAuthenticated"
+            prepend-icon="mdi-logout"
+            text
+            @click="signOut"
+            class="btn-text"
+        >
             <span>로그아웃</span>
         </v-btn>
         <v-btn
@@ -129,7 +123,11 @@ export default {
     },
     computed: {
         hideMenuBar() {
-            const hiddenRoutes = ["/account/login", "/account/register"];
+            const hiddenRoutes = [
+                "/account/login",
+                "/account/register",
+                "/admin/dashboard",
+            ];
 
             return !hiddenRoutes.includes(this.$route.path);
         },
@@ -140,24 +138,11 @@ export default {
         goToHome() {
             this.$router.push("/");
         },
-        goToMovieList() {
-            this.$router.push("/movie/list");
-        },
-        goToFoodList() {
-            this.$router.push("/food/list");
-        },
-        goToDrinkList() {
-            this.$router.push("/drink/list");
-        },
         goToCart() {
             this.$router.push("/cart/list");
         },
-        
-        goToBoardList() {
-            this.$router.push("/board/list");
-        },
         goToSubscriptionList() {
-            this.$router.push("/subscription/list")
+            this.$router.push("/subscription/list");
         },
         signIn() {
             this.$router.push("/account/login");
@@ -171,12 +156,12 @@ export default {
         },
     },
     mounted() {
-        console.log('navigation bar mounted()')
-        
-        const userToken = localStorage.getItem("userToken")
+        console.log("navigation bar mounted()");
+
+        const userToken = localStorage.getItem("userToken");
         if (userToken) {
-            console.log('You already has a userToken!!!')
-            this.$store.state.authenticationModule.isAuthenticated = true
+            console.log("You already has a userToken!!!");
+            this.$store.state.authenticationModule.isAuthenticated = true;
         }
     },
     beforeUnmount() {
