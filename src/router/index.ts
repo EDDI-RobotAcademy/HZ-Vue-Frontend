@@ -24,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
     ...CartRoutes,
     // ...AuthenticationRoutes,
     ...SubscriptionRoutes,
-    ...OrderRoutes
+    ...OrderRoutes,
 ];
 
 const router = createRouter({

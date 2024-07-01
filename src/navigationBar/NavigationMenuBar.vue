@@ -27,30 +27,6 @@
             </v-list>
         </v-menu>
 
-        <!-- <v-btn
-            prepend-icon="mdi-video-vintage"
-            text
-            @click="goToMovieList"
-            class="btn-text"
-        >
-            <span>영화</span>
-        </v-btn>
-        <v-btn
-            prepend-icon="mdi-food"
-            text
-            @click="goToFoodList"
-            class="btn-text"
-        >
-            <span>음식</span>
-        </v-btn>
-        <v-btn
-            prepend-icon="mdi-beer"
-            text
-            @click="goToDrinkList"
-            class="btn-text"
-        >
-            <span>음료</span>
-        </v-btn> -->
         <v-btn
             v-if="isAuthenticated"
             prepend-icon="mdi-currency-usd"
@@ -147,7 +123,11 @@ export default {
     },
     computed: {
         hideMenuBar() {
-            const hiddenRoutes = ["/account/login", "/account/register"];
+            const hiddenRoutes = [
+                "/account/login",
+                "/account/register",
+                "/admin/dashboard",
+            ];
 
             return !hiddenRoutes.includes(this.$route.path);
         },
@@ -158,21 +138,8 @@ export default {
         goToHome() {
             this.$router.push("/");
         },
-        goToMovieList() {
-            this.$router.push("/movie/list");
-        },
-        goToFoodList() {
-            this.$router.push("/food/list");
-        },
-        goToDrinkList() {
-            this.$router.push("/drink/list");
-        },
         goToCart() {
             this.$router.push("/cart/list");
-        },
-
-        goToBoardList() {
-            this.$router.push("/board/list");
         },
         goToSubscriptionList() {
             this.$router.push("/subscription/list");
