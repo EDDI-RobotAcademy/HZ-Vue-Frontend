@@ -72,17 +72,6 @@
         >
             <span>로그아웃</span>
         </v-btn>
-        <v-btn
-            v-if="!isAuthenticated"
-            color="red"
-            dark
-            prepend-icon="mdi-account-plus"
-            text
-            @click="register"
-            class="btn-text"
-        >
-            <span>회원가입</span>
-        </v-btn>
     </v-app-bar>
 </template>
 

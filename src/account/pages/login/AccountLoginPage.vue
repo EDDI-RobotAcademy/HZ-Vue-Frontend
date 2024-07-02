@@ -40,7 +40,7 @@
                             variant="solo"
                             v-model="password"
                             color="#fff"
-                            bg-color="rgba(0, 0, 0,0.6)"
+                            bg-color="rgba(0, 0, 0, 0.6)"
                             :rules="[passwordRequired]"
                             :append-inner-icon="
                                 visible ? 'mdi-eye-off' : 'mdi-eye'
@@ -200,6 +200,14 @@ export default {
     object-fit: fill !important;
 }
 
+.login-wrapper {
+    height: calc(100% - 160px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .login-wrapper > div {
     padding: 60px 80px;
     background-color: rgba(0, 0, 0, 0.6);
@@ -225,48 +233,40 @@ export default {
     margin-bottom: 8px;
 }
 
-.login-wrapper {
-    height: calc(100% - 160px);
+.login-wrapper > div > div:nth-last-child(3) {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+}
+
+.login-wrapper > div > div:nth-last-child(2) {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around;
+}
 
-    > div > div:nth-last-child(3) {
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
-        margin-bottom: 8px;
-    }
+.login-wrapper > div > div > div {
+    width: 38px;
+    height: 38px;
+    cursor: pointer;
+}
 
-    > div > div:nth-last-child(2) {
-        display: flex;
-        justify-content: space-around;
-    }
+.login-wrapper > div > div:last-child {
+    display: flex;
+    margin-top: 16px;
+}
 
-    > div > div > div {
-        width: 38px;
-        height: 38px;
-        cursor: pointer;
-    }
+.login-wrapper > div > div:last-child > p:first-child {
+    color: rgba(255, 255, 255, 0.5);
+    margin-right: 6px;
+}
 
-    > div > div:last-child {
-        display: flex;
-        margin-top: 16px;
+.login-wrapper > div > div:last-child > p:last-child {
+    color: rgba(255, 255, 255, 0.7);
+}
 
-        > p:first-child {
-            color: rgba(255, 255, 255, 0.5);
-            margin-right: 6px;
-        }
-
-        > p:last-child {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        > p:last-child:hover {
-            cursor: pointer;
-            text-decoration: underline;
-        }
-    }
+.login-wrapper > div > div:last-child > p:last-child:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .v-form .v-text-field {
