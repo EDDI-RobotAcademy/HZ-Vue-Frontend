@@ -188,7 +188,7 @@ export default {
                     accessToken,
                 });
 
-                this.$router.push("/");
+                this.$router.push("/movie/list");
             }
         },
     },

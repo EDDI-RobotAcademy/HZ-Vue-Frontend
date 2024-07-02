@@ -125,7 +125,11 @@ export default {
     methods: {
         ...mapActions(authenticationModule, ["requestLogoutToDjango"]),
         goToHome() {
-            this.$router.push("/");
+            if (this.$store.state.authenticationModule.isAuthenticated) {
+                this.$router.push("/movie/list");
+            } else {
+                this.$router.push("/");
+            }
         },
         goToCart() {
             this.$router.push("/cart/list");
