@@ -181,6 +181,7 @@ export default {
         ...mapActions("cartModule", ["requestDrinkcartListToDjango"]),
         ...mapActions("orderModule", ["requestCreateFoodorderToDjango"]),
         ...mapActions("orderModule", ["requestCreateDrinkorderToDjango"]),
+        ...mapActions("orderModule", ["requestCreatePurchaseToDjango"]),
         
         updateQuantity(item) {
             // 수량 업데이트 로직
@@ -216,13 +217,22 @@ export default {
                     drinkorderPrice: item.drinkPrice,
                     quantity: item.quantity
                 }));
-                console.log('foodorderItems:', foodorderItems)
-                console.log('drinkorderItems:', drinkorderItems)
                 const foodorderId = await this.requestCreateFoodorderToDjango({ items: foodorderItems });
                 const drinkorderId = await this.requestCreateDrinkorderToDjango({ items: drinkorderItems });
-                // const orderId = response.orderId;
 
-                this.$router.push({ name: 'OrderReadPage', params: { foodorderId: foodorderId.toString(), drinkorderId: drinkorderId.toString() } });
+                const purchasePayload = {
+                    order: [
+                        { foodorderId: foodorderId },
+                        { drinkorderId: drinkorderId }
+                    ]
+                };
+                
+                console.log("purchasePayload:", purchasePayload)
+
+                const purchaseId = await this.requestCreatePurchaseToDjango(purchasePayload);
+                
+
+                this.$router.push({ name: 'OrderReadPage', params: { orderId: purchaseId.toString() } });
 
             } catch (error) {
                 console.error('Order creation failed:', error);
