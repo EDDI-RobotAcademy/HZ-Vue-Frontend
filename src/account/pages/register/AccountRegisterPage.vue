@@ -68,10 +68,11 @@
                         </v-radio-group>
 
                         <div class="age-box">
-                            <p>나이</p>
+                            <p>출생년도</p>
                             <v-slider
-                                v-model="age"
-                                max="120"
+                                v-model="birthyear"
+                                min="1900"
+                                max="2024"
                                 :step="1"
                                 thumb-label="always"
                                 thumb-color="#f6c748"
@@ -113,7 +114,7 @@ export default {
             email: null,
             nickname: null,
             gender: "man",
-            age: 0,
+            birthyear: 2024,
             nicknameErrorMessage: [],
             isNicknameValid: false,
         };
@@ -174,7 +175,8 @@ export default {
                 const accountInfo = {
                     email: this.email,
                     nickname: this.nickname,
-                    // 성별, 나이 추가해야됨
+                    gender: this.gender,
+                    birthyear: this.birthyear,
                 };
 
                 await this.requestCreateNewAccountToDjango(accountInfo);
@@ -306,5 +308,9 @@ export default {
 :deep(.v-slider-thumb__label) {
     background-color: #f6c748 !important;
     color: #000 !important;
+}
+
+:deep(.v-slider.v-input--horizontal) {
+    margin-inline: 24px 24px;
 }
 </style>
