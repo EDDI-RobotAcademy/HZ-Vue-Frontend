@@ -1,6 +1,9 @@
 export interface OrderState {
     foodorderList: FoodorderItem[];
+    foodorder : FoodorderItem | null
     drinkorderList: DrinkorderItem[];
+    drinkorder : DrinkorderItem | null
+    
 //     loading: boolean;
 //     error: string | null;
 }
@@ -21,7 +24,9 @@ export interface DrinkorderItem {
 
 const state: OrderState = {
     foodorderList: [],
+    foodorder : null,
     drinkorderList: [],
+    drinkorder : null
 }
 
 export default state
