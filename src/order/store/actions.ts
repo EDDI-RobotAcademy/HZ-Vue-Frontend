@@ -209,7 +209,7 @@ const actions: OrderActions = {
             }
 
             const response =
-                await axiosInst.djangoAxiosInst.post(`/orders/read/${purchaseId}`, requestData)
+                await axiosInst.djangoAxiosInst.post(`/purchase/read/${purchaseId}`, requestData)
 
             return response.data
         } catch (error) {
