@@ -10,6 +10,8 @@ import AuthenticationRoutes from "@/authentication/router/AuthenticationRoutes";
 import CartRoutes from "@/cart/router/CartRoutes";
 import SubscriptionRoutes from "@/subscription/router/SubscriptionRoutes";
 import OrderRoutes from "@/order/router/OrderRoutes";
+import AdminDashBoardRoutes from "@/admin/router/AdminDashBoardRoutes";
+import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
 
 // import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
 
@@ -25,6 +27,8 @@ const routes: Array<RouteRecordRaw> = [
     // ...AuthenticationRoutes,
     ...SubscriptionRoutes,
     ...OrderRoutes,
+    ...AdminDashBoardRoutes,
+    ...KmeansRoutes,
 ];
 
 const router = createRouter({
