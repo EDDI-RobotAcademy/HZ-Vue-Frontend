@@ -7,6 +7,9 @@ const OrderRoutes = [
         components: {
             default: OrderReadPage
         },
+        props: {
+            default: true
+        }
     },
 ]
 
