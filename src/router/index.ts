@@ -12,6 +12,7 @@ import SubscriptionRoutes from "@/subscription/router/SubscriptionRoutes";
 import OrderRoutes from "@/order/router/OrderRoutes";
 import AdminDashBoardRoutes from "@/admin/router/AdminDashBoardRoutes";
 import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
+import LogisticRegressionRoutes from "@/logisticRegression/router/LogisticRegressionRoutes";
 
 
 // import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
@@ -30,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
     ...OrderRoutes,
     ...AdminDashBoardRoutes,
     ...KmeansRoutes,
+    ...LogisticRegressionRoutes,
 
 ];
 
