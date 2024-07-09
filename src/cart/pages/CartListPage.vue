@@ -232,7 +232,7 @@ export default {
                 const purchaseId = await this.requestCreatePurchaseToDjango(purchasePayload);
                 
 
-                this.$router.push({ name: 'OrderReadPage', params: { orderId: purchaseId.toString() } });
+                this.$router.push({ name: 'OrderReadPage', params: { purchaseId: purchaseId.toString() } });
 
             } catch (error) {
                 console.error('Order creation failed:', error);

@@ -2,11 +2,14 @@ import OrderReadPage from '@/order/pages/OrderReadPage.vue'
 
 const OrderRoutes = [
     {
-        path: '/order/read/:orderId',
+        path: '/purchase/read/:purchaseId',
         name: 'OrderReadPage',
         components: {
             default: OrderReadPage
         },
+        props: {
+            default: true
+        }
     },
 ]
 
