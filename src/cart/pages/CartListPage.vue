@@ -211,25 +211,29 @@ export default {
                     foodorderPrice: item.foodPrice,
                     foodquantity: item.foodquantity
                 }));
+                console.log("foodorderItems: ", foodorderItems)
                 const selectedDrinkcartItems = this.drinkcartItems.filter(item => this.selectedDrinkItems.includes(item));
                 const drinkorderItems = selectedDrinkcartItems.map(item => ({
                     drinkcartItemId: item.drinkcartItemId,
                     drinkorderPrice: item.drinkPrice,
                     drinkquantity: item.drinkquantity
                 }));
+                console.log("drinkorderItems: ", drinkorderItems)
                 const foodorderId = await this.requestCreateFoodorderToDjango({ items: foodorderItems });
                 const drinkorderId = await this.requestCreateDrinkorderToDjango({ items: drinkorderItems });
 
                 const purchasePayload = {
-                    order: [
-                        { foodorderId: foodorderId },
-                        { drinkorderId: drinkorderId }
-                    ]
+                        foodorderItems,
+                        drinkorderItems,
                 };
                 
                 console.log("purchasePayload:", purchasePayload)
 
-                const purchaseId = await this.requestCreatePurchaseToDjango(purchasePayload);
+                const purchaseId = await this.requestCreatePurchaseToDjango({ 
+                    userToken: localStorage.getItem('userToken'),
+                    foodorderItems: purchasePayload.foodorderItems,
+                    drinkorderItems: purchasePayload.drinkorderItems
+                });
                 console.log("purchaseId: ", purchaseId)
                 
 

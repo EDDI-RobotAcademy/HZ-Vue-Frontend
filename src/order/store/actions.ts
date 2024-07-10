@@ -33,10 +33,16 @@ export type OrderActions = {
         context: ActionContext<OrderState, any>,
         payload: {
             userToken: string;
-            item: {
-                foodorderId: number;
-                drinkorderId: number;
-            }[]
+            foodorderItems: {
+                foodcartItemId: number;
+                foodquantity: number;
+                foodorderPrice: number;
+            }[];
+            drinkorderItems: {
+                drinkcartItemId: number;
+                drinkquantity: number;
+                drinkorderPrice: number;
+            }[];
         }
     ): Promise<AxiosResponse>;
 
@@ -135,8 +141,10 @@ const actions: OrderActions = {
 
             const requestData = {
                 userToken,
-                payload
-            }
+                drinkorderItems: payload.drinkorderItems,
+                foodorderItems: payload.foodorderItems,
+            };
+            
             console.log('requestData:', requestData)
 
             const response =
