@@ -25,13 +25,13 @@
                                 <td>{{ item.foodPrice }}</td>
                                 <td>
                                     <v-text-field
-                                        v-model="item.quantity"
+                                        v-model="item.foodquantity"
                                         type="number"
                                         min="1"
                                         @change="updateQuantity(item)"
                                     ></v-text-field>
                                 </td>
-                                <td>{{ item.foodPrice * item.quantity }}</td>
+                                <td>{{ item.foodPrice * item.foodquantity }}</td>
                                 <td>
                                     <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
                                 </td>
@@ -68,13 +68,13 @@
                                 <td>{{ item.drinkPrice }}</td>
                                 <td>
                                     <v-text-field
-                                        v-model="item.quantity"
+                                        v-model="item.drinkquantity"
                                         type="number"
                                         min="1"
                                         @change="updateQuantity(item)"
                                     ></v-text-field>
                                 </td>
-                                <td>{{ item.drinkPrice * item.quantity }}</td>
+                                <td>{{ item.drinkPrice * item.drinkquantity }}</td>
                                 <td>
                                     <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
                                 </td>
@@ -139,7 +139,7 @@ export default {
                 return 0;
             }
             return this.foodcartItems.reduce(
-                (total, food) => total + food.foodPrice * food.quantity,
+                (total, food) => total + food.foodPrice * food.foodquantity,
                 0
             );
         },
@@ -148,7 +148,7 @@ export default {
                 return 0;
             }
             return this.drinkcartItems.reduce(
-                (total, drink) => total + drink.drinkPrice * drink.quantity,
+                (total, drink) => total + drink.drinkPrice * drink.drinkquantity,
                 0
             );
         },
@@ -157,7 +157,7 @@ export default {
                 return 0;
             }
             return this.selectedFoodItems.reduce(
-                (total, food) => total + food.foodPrice * food.quantity ,
+                (total, food) => total + food.foodPrice * food.foodquantity ,
                 0
             );
         },
@@ -166,7 +166,7 @@ export default {
                 return 0;
             }
             return this.selectedDrinkItems.reduce(
-                (total, drink) => total + drink.drinkPrice * drink.quantity ,
+                (total, drink) => total + drink.drinkPrice * drink.drinkquantity ,
                 0
             );
         },
@@ -209,27 +209,31 @@ export default {
                 const foodorderItems = selectedFoodcartItems.map(item => ({
                     foodcartItemId: item.foodcartItemId,
                     foodorderPrice: item.foodPrice,
-                    quantity: item.quantity
+                    foodquantity: item.foodquantity
                 }));
+                console.log("foodorderItems: ", foodorderItems)
                 const selectedDrinkcartItems = this.drinkcartItems.filter(item => this.selectedDrinkItems.includes(item));
                 const drinkorderItems = selectedDrinkcartItems.map(item => ({
                     drinkcartItemId: item.drinkcartItemId,
                     drinkorderPrice: item.drinkPrice,
-                    quantity: item.quantity
+                    drinkquantity: item.drinkquantity
                 }));
+                console.log("drinkorderItems: ", drinkorderItems)
                 const foodorderId = await this.requestCreateFoodorderToDjango({ items: foodorderItems });
                 const drinkorderId = await this.requestCreateDrinkorderToDjango({ items: drinkorderItems });
 
                 const purchasePayload = {
-                    order: [
-                        { foodorderId: foodorderId },
-                        { drinkorderId: drinkorderId }
-                    ]
+                        foodorderItems,
+                        drinkorderItems,
                 };
                 
                 console.log("purchasePayload:", purchasePayload)
 
-                const purchaseId = await this.requestCreatePurchaseToDjango(purchasePayload);
+                const purchaseId = await this.requestCreatePurchaseToDjango({ 
+                    userToken: localStorage.getItem('userToken'),
+                    foodorderItems: purchasePayload.foodorderItems,
+                    drinkorderItems: purchasePayload.drinkorderItems
+                });
                 console.log("purchaseId: ", purchaseId)
                 
 

@@ -11,7 +11,7 @@ export type OrderActions = {
             userToken: string;
             items: {
                 foodcartItemId: number;
-                quantity: number;
+                foodquantity: number;
                 foodorderPrice: number
             }[]
         }
@@ -23,7 +23,7 @@ export type OrderActions = {
             userToken: string;
             items: {
                 drinkcartItemId: number;
-                quantity: number;
+                drinkquantity: number;
                 drinkorderPrice: number
             }[]
         }
@@ -33,10 +33,16 @@ export type OrderActions = {
         context: ActionContext<OrderState, any>,
         payload: {
             userToken: string;
-            item: {
-                foodorderId: number;
-                drinkorderId: number;
-            }[]
+            foodorderItems: {
+                foodcartItemId: number;
+                foodquantity: number;
+                foodorderPrice: number;
+            }[];
+            drinkorderItems: {
+                drinkcartItemId: number;
+                drinkquantity: number;
+                drinkorderPrice: number;
+            }[];
         }
     ): Promise<AxiosResponse>;
 
@@ -79,7 +85,7 @@ const actions: OrderActions = {
                 userToken,
                 items: payload.items.map(item => ({
                     foodcartItemId: item.foodcartItemId,
-                    quantity: item.quantity,
+                    foodquantity: item.foodquantity,
                     foodorderPrice: item.foodorderPrice
                 }))
             };
@@ -109,7 +115,7 @@ const actions: OrderActions = {
                 userToken,
                 items: payload.items.map(item => ({
                     drinkcartItemId: item.drinkcartItemId,
-                    quantity: item.quantity,
+                    drinkquantity: item.drinkquantity,
                     drinkorderPrice: item.drinkorderPrice
                 }))
             };
@@ -135,8 +141,10 @@ const actions: OrderActions = {
 
             const requestData = {
                 userToken,
-                payload
-            }
+                drinkorderItems: payload.drinkorderItems,
+                foodorderItems: payload.foodorderItems,
+            };
+            
             console.log('requestData:', requestData)
 
             const response =
