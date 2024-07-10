@@ -172,7 +172,7 @@ export default {
 
         filteredActionMovie() {
             return this.movieList.filter(
-                (movie) => movie.movieGenre === "액션"
+                (movie) => movie.movieGenre === "공포"
             );
         },
 
@@ -183,7 +183,9 @@ export default {
         },
 
         filteredSFMovie() {
-            return this.movieList.filter((movie) => movie.movieGenre === "SF");
+            return this.movieList.filter(
+                (movie) => movie.movieGenre === "뮤지컬"
+            );
         },
     },
 
@@ -195,7 +197,7 @@ export default {
         ...mapActions(movieModule, ["requestMovieListToDjango"]),
 
         getImageUrl(imageName) {
-            return require("@/assets/images/uploadImages/" + imageName);
+            return require(`@/assets/images/uploadImages/${imageName}`);
         },
 
         goToMovieReadPage(movieId) {
