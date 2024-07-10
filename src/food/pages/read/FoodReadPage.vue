@@ -91,7 +91,7 @@ export default {
                     foodId: this.food.foodId,
                     foodName: this.food.foodName,
                     foodPrice: this.food.foodPrice,
-                    quantity: 1, // 임시로 기본 수량 1로 설정
+                    foodquantity: 1, // 임시로 기본 수량 1로 설정
                 };
                 await this.requestAddFoodcartToDjango(foodcartData);
                 this.$router.push({ name: 'CartListPage' });

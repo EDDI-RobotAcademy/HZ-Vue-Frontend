@@ -11,7 +11,7 @@ export type OrderActions = {
             userToken: string;
             items: {
                 foodcartItemId: number;
-                quantity: number;
+                foodquantity: number;
                 foodorderPrice: number
             }[]
         }
@@ -23,7 +23,7 @@ export type OrderActions = {
             userToken: string;
             items: {
                 drinkcartItemId: number;
-                quantity: number;
+                drinkquantity: number;
                 drinkorderPrice: number
             }[]
         }
@@ -79,7 +79,7 @@ const actions: OrderActions = {
                 userToken,
                 items: payload.items.map(item => ({
                     foodcartItemId: item.foodcartItemId,
-                    quantity: item.quantity,
+                    foodquantity: item.foodquantity,
                     foodorderPrice: item.foodorderPrice
                 }))
             };
@@ -109,7 +109,7 @@ const actions: OrderActions = {
                 userToken,
                 items: payload.items.map(item => ({
                     drinkcartItemId: item.drinkcartItemId,
-                    quantity: item.quantity,
+                    drinkquantity: item.drinkquantity,
                     drinkorderPrice: item.drinkorderPrice
                 }))
             };

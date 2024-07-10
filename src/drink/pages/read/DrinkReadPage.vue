@@ -91,7 +91,7 @@ export default {
                     drinkId: this.drink.drinkId,
                     drinkName: this.drink.drinkName,
                     drinkPrice: this.drink.drinkPrice,
-                    quantity: 1, // 임시로 기본 수량 1로 설정
+                    drinkquantity: 1, // 임시로 기본 수량 1로 설정
                 };
                 await this.requestAddDrinkcartToDjango(drinkcartData);
                 this.$router.push({ name: 'CartListPage' });
