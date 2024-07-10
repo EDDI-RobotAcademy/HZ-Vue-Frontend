@@ -1,4 +1,4 @@
-import OrderReadPage from '@/order/pages/OrderReadPage.vue'
+import OrderReadPage from '@/order/pages/read/OrderReadPage.vue'
 
 const OrderRoutes = [
     {

@@ -3,9 +3,7 @@ export interface OrderState {
     foodorder : FoodorderItem | null
     drinkorderList: DrinkorderItem[];
     drinkorder : DrinkorderItem | null
-    
-//     loading: boolean;
-//     error: string | null;
+    purchaseData: PurchaseData | null;
 }
 
 export interface FoodorderItem {
@@ -22,11 +20,34 @@ export interface DrinkorderItem {
     drinkorderPrice: number;
 }
 
+export interface PurchaseData {
+    purchase: {
+        id: number;
+        purchase_date: string;
+        account: {
+            id: number;
+            loginType: string;
+            roleType: string;
+        };
+    };
+    foodorder: {
+        id: number;
+        status: string;
+        created_date: string;
+    };
+    drinkorder: {
+        id: number;
+        status: string;
+        created_date: string;
+    };
+}
+
 const state: OrderState = {
     foodorderList: [],
     foodorder : null,
     drinkorderList: [],
-    drinkorder : null
+    drinkorder : null,
+    purchaseData: null
 }
 
 export default state
