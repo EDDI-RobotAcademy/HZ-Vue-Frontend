@@ -5,21 +5,17 @@
                 <v-card>
                     <v-card-title>주문 상세 내역 보기</v-card-title>
                     <v-card-text>
-                        <v-table v-if="order">
+                        <v-table v-if="purchase">
                             <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>foodorderId</th>
+                                <th>drinkorderId</th>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in order.items" :key="item.productId">
-                                    <td>{{ item.productName }}</td>
-                                    <td>{{ item.productPrice }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ item.productPrice * item.quantity }}</td>
+                                <tr v-for="item in purchase" :key="item.purchase">
+                                    <td>{{ item.foodorderId }}</td>
+                                    <td>{{ item.drinkorderId }}</td>
                                 </tr>
                             </tbody>
                         </v-table>
@@ -46,15 +42,16 @@ import { mapActions } from 'vuex';
 const orderModule = 'orderModule'
 
 export default {
+    name: 'OrderReadPage',
     props: {
-        orderId: {
+        purchaseId: {
             type: String,
             required: true,
         }
     },
     data() {
         return {
-            order: null,
+            purchase: null,
         };
     },
     computed: {
@@ -71,29 +68,19 @@ export default {
         }
     },
     methods: {
-        ...mapActions("orderModule", ["requestReadOrderToDjango"]),
-        async fetchOrderData() {
-            const orderId = this.orderId
-            console.log('OrderReadPage orderId:', orderId)
+        ...mapActions("orderModule", ["requestReadPurchaseToDjango"]),
+        async fetchPurchaseData() {
+            const purchaseId = this.purchaseId
+
+            console.log('OrderReadPage purchaseId:', purchaseId)
 
             try {
-                const response = await this.requestReadOrderToDjango({ orderId })
+                const response = await this.requestReadPurchaseToDjango({ purchaseId })
+                this.purchase = response
+                console.log("purchaseData:", this.purchase)
             } catch (error) {
                 console.error('주문 내역 확인 중 에러:', error)
             }
-
-            // const orderId = this.$route.params.orderId;
-            // 여기에서 API 호출 또는 Vuex 액션을 통해 주문 데이터를 가져옵니다.
-            // 예시: const response = await this.$store.dispatch('fetchOrder', orderId);
-            // this.order = response;
-            // 여기서는 더미 데이터를 사용합니다.
-            // this.order = {
-            //     orderId: orderId,
-            //     items: [
-            //         { productId: 1, productName: "Product 1", productPrice: 100, quantity: 2 },
-            //         { productId: 2, productName: "Product 2", productPrice: 200, quantity: 1 },
-            //     ]
-            // };
         },
         placeOrder() {
             // 최종 주문 처리 로직
@@ -103,7 +90,7 @@ export default {
         }
     },
     created() {
-        this.fetchOrderData();
+        this.fetchPurchaseData();
     }
 };
 </script>

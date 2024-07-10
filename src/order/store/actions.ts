@@ -1,7 +1,8 @@
 import { ActionContext } from "vuex"
-import { FoodorderItem, DrinkorderItem, OrderState } from "./states"
+import { FoodorderItem, DrinkorderItem, OrderState, PurchaseData } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
+import { SET_PURCHASE_DATA } from "./mutation-types"
 
 export type OrderActions = {
     requestCreateFoodorderToDjango(
@@ -58,7 +59,7 @@ export type OrderActions = {
         payload: {
             purchaseId: string
         }
-    ): Promise<AxiosResponse>;
+    ): Promise<AxiosResponse<PurchaseData>>;
 }
 
 
@@ -142,7 +143,7 @@ const actions: OrderActions = {
                 await axiosInst.djangoAxiosInst.post('/purchase/create', requestData);
             console.log('response data:', response.data)
 
-            return response.data;
+            return response.data.purchaseId;
         } catch (error) {
             console.error('Error creating purchase:', error);
             throw error;
@@ -203,6 +204,7 @@ const actions: OrderActions = {
             }
 
             const { purchaseId } = payload
+            console.log("purchaseId: ", purchaseId)
 
             const requestData = {
                 userToken,
@@ -210,7 +212,11 @@ const actions: OrderActions = {
 
             const response =
                 await axiosInst.djangoAxiosInst.post(`/purchase/read/${purchaseId}`, requestData)
-
+            
+            console.log("response: ", response)
+            console.log("response.data: ", response.data)
+            
+            // commit(SET_PURCHASE_DATA, response.data)
             return response.data
         } catch (error) {
             console.error('주문 내역 요청 중 에러:', error)
