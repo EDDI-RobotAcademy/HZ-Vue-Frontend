@@ -62,6 +62,7 @@
                                         'linear-gradient(to right, rgba(30, 81, 157), rgba(218, 13, 28))',
                                 }"
                                 class="custom-card-title custom-button"
+                                v-on:click="subscribePremium"
                                 >구독</v-btn
                             >
                             <div></div>
@@ -127,6 +128,7 @@
                                         'linear-gradient(to right, rgba(32, 80, 157), rgba(163, 57, 213))',
                                 }"
                                 class="custom-button"
+                                v-on:click="subscribeStandard"
                                 >구독</v-btn
                             >
                             <div></div>
@@ -149,7 +151,7 @@
                                 'linear-gradient(to right, rgba(32, 80, 157), rgba(104, 59, 221))',
                         }"
                     >
-                        '베이직'<br />1080p
+                        베이직<br />1080p
                     </v-card-title>
                     <div
                         style="
@@ -189,6 +191,7 @@
                                         'linear-gradient(to right, rgba(32, 80, 157), rgba(104, 59, 221))',
                                 }"
                                 class="custom-button"
+                                v-on:click="subscribeBasic"
                                 >구독</v-btn
                             >
                         </v-card-actions>
@@ -200,8 +203,60 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
+const subscriptionModule = "subscriptionModule";
+
 export default {
     name: "MembershipOptions",
+
+    methods: {
+        ...mapActions(subscriptionModule, [
+            "requestCreateNewSubscriptionToDjango",
+        ]),
+
+        async subscribePremium() {
+            const now = new Date();
+            const startDate = new Date();
+            const endDate = new Date(now.setMonth(now.getMonth() + 1));
+
+            const subscriptionInfo = {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                subscription_id: 1,
+            };
+
+            await this.requestCreateNewSubscriptionToDjango(subscriptionInfo);
+        },
+
+        async subscribeStandard() {
+            const now = new Date();
+            const startDate = new Date();
+            const endDate = new Date(now.setMonth(now.getMonth() + 1));
+
+            const subscriptionInfo = {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                subscription_id: 2,
+            };
+
+            await this.requestCreateNewSubscriptionToDjango(subscriptionInfo);
+        },
+
+        async subscribeBasic() {
+            const now = new Date();
+            const startDate = new Date();
+            const endDate = new Date(now.setMonth(now.getMonth() + 1));
+
+            const subscriptionInfo = {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                subscription_id: 3,
+            };
+
+            await this.requestCreateNewSubscriptionToDjango(subscriptionInfo);
+        },
+    },
 };
 </script>
 

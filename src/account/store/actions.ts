@@ -14,7 +14,12 @@ export type AccountActions = {
     ): Promise<boolean>;
     requestCreateNewAccountToDjango(
         context: ActionContext<any, any>,
-        accountInfo: { email: string; nickname: string }
+        accountInfo: {
+            email: string;
+            nickname: string;
+            gender: string;
+            birthyear: string;
+        }
     ): Promise<void>;
 };
 

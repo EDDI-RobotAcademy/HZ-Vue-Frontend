@@ -7,6 +7,7 @@ import authenticationModule from "@/authentication/store/authenticationModule";
 import accountModule from "@/account/store/accountModule";
 import cartModule from "@/cart/store/cartModule";
 import orderModule from "@/order/store/orderModule";
+import subscriptionModule from "@/subscription/store/subscriptionModule";
 // import authenticationModule from "@/authentication/store/authenticationModule"
 // import accountModule from "@/account/store/accountModule";
 
@@ -24,6 +25,7 @@ export default createStore({
         foodModule,
         cartModule,
         orderModule,
+        subscriptionModule,
         // authenticationModule,
         // accountModule,
     },
