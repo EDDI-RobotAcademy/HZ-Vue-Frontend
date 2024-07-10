@@ -19,8 +19,12 @@
             </div>
         </div>
 
-        <div class="movie-list-box">
-            <p class="movie-type-text">오늘 대한민국의 TOP 10 영화</p>
+        <div
+            class="movie-list-box"
+            v-for="(category, index) in getMovieCategories"
+            :key="index"
+        >
+            <p class="movie-type-text">{{ category.title }}</p>
             <swiper
                 :slidesPerView="5"
                 :spaceBetween="10"
@@ -32,109 +36,34 @@
                 class="mySwiper no-swipe"
                 style="height: calc(100% - 68px)"
             >
-                <swiper-slide v-for="(movie, i) in movieList" :key="i">
+                <swiper-slide v-for="(movie, i) in category.movies" :key="i">
                     <img
                         :src="getImageUrl(movie.movieImage)"
                         width="100%"
                         height="100%"
                         class="movie-img"
-                        @click="goToMovieReadPage(movie.movieId)"
-                    />
-                </swiper-slide>
-            </swiper>
-        </div>
-
-        <div class="movie-list-box">
-            <p class="movie-type-text">액션 영화</p>
-            <swiper
-                :slidesPerView="5"
-                :spaceBetween="10"
-                :navigation="true"
-                :modules="modules"
-                :slidesPerGroup="5"
-                :noSwiping="true"
-                :noSwipingClass="'no-swipe'"
-                class="mySwiper no-swipe"
-                style="height: calc(100% - 68px)"
-            >
-                <swiper-slide
-                    v-for="(movie, i) in filteredActionMovie"
-                    :key="i"
-                >
-                    <img
-                        :src="getImageUrl(movie.movieImage)"
-                        width="100%"
-                        height="100%"
-                        class="movie-img"
-                        @click="goToMovieReadPage(movie.movieId)"
-                    />
-                </swiper-slide>
-            </swiper>
-        </div>
-
-        <div class="movie-list-box">
-            <p class="movie-type-text">판타지 영화</p>
-            <swiper
-                :slidesPerView="5"
-                :spaceBetween="10"
-                :navigation="true"
-                :modules="modules"
-                :slidesPerGroup="5"
-                :noSwiping="true"
-                :noSwipingClass="'no-swipe'"
-                class="mySwiper no-swipe"
-                style="height: calc(100% - 68px)"
-            >
-                <swiper-slide
-                    v-for="(movie, i) in filteredFantasyMovie"
-                    :key="i"
-                >
-                    <img
-                        :src="getImageUrl(movie.movieImage)"
-                        width="100%"
-                        height="100%"
-                        class="movie-img"
-                        @click="goToMovieReadPage(movie.movieId)"
-                    />
-                </swiper-slide>
-            </swiper>
-        </div>
-
-        <div class="movie-list-box">
-            <p class="movie-type-text">SF 영화</p>
-            <swiper
-                :slidesPerView="5"
-                :spaceBetween="10"
-                :navigation="true"
-                :modules="modules"
-                :slidesPerGroup="5"
-                :noSwiping="true"
-                :noSwipingClass="'no-swipe'"
-                class="mySwiper no-swipe"
-                style="height: calc(100% - 68px)"
-            >
-                <swiper-slide v-for="(movie, i) in filteredSFMovie" :key="i">
-                    <img
-                        :src="getImageUrl(movie.movieImage)"
-                        width="100%"
-                        height="100%"
-                        class="movie-img"
-                        @click="goToMovieReadPage(movie.movieId)"
+                        @click="clickingImg(movie)"
                     />
                 </swiper-slide>
             </swiper>
         </div>
     </div>
+
+    <movie-read-page
+        :movie="movieInfo"
+        v-model="dialog"
+        @close="dialog = false"
+    ></movie-read-page>
 </template>
 
 <script>
-// 이것은 vuex 때문에 사용 가능
 import { mapActions, mapState } from "vuex";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import MovieReadPage from "../read/MovieReadPage.vue";
 
 const movieModule = "movieModule";
 
@@ -142,6 +71,7 @@ export default {
     components: {
         Swiper,
         SwiperSlide,
+        MovieReadPage,
     },
 
     setup() {
@@ -152,25 +82,32 @@ export default {
 
     data() {
         return {
-            items: [
-                { src: require("@/assets/images/fixed/movie01.png") },
-                { src: require("@/assets/images/fixed/movie02.png") },
-                { src: require("@/assets/images/fixed/movie03.png") },
-                { src: require("@/assets/images/fixed/movie04.png") },
-                { src: require("@/assets/images/fixed/movie05.png") },
-                { src: require("@/assets/images/fixed/movie06.png") },
-                { src: require("@/assets/images/fixed/movie07.png") },
-                { src: require("@/assets/images/fixed/movie08.png") },
-                { src: require("@/assets/images/fixed/movie09.png") },
-                { src: require("@/assets/images/fixed/movie10.png") },
-            ],
+            dialog: false,
+            movieInfo: "",
         };
     },
 
     computed: {
         ...mapState(movieModule, ["movieList"]),
+        getMovieCategories() {
+            return [
+                {
+                    title: "애니메이션 영화",
+                    movies: this.filteredAnimationMovie,
+                },
+                { title: "공포 영화", movies: this.filteredHorrorMovie },
+                { title: "판타지 영화", movies: this.filteredFantasyMovie },
+                { title: "뮤지컬 영화", movies: this.filteredMusicalMovie },
+            ];
+        },
 
-        filteredActionMovie() {
+        filteredAnimationMovie() {
+            return this.movieList.filter(
+                (movie) => movie.movieGenre === "애니메이션"
+            );
+        },
+
+        filteredHorrorMovie() {
             return this.movieList.filter(
                 (movie) => movie.movieGenre === "공포"
             );
@@ -182,7 +119,7 @@ export default {
             );
         },
 
-        filteredSFMovie() {
+        filteredMusicalMovie() {
             return this.movieList.filter(
                 (movie) => movie.movieGenre === "뮤지컬"
             );
@@ -200,11 +137,9 @@ export default {
             return require(`@/assets/images/uploadImages/${imageName}`);
         },
 
-        goToMovieReadPage(movieId) {
-            this.$router.push({
-                name: "MovieReadPage",
-                params: { movieId: movieId },
-            });
+        clickingImg(movie) {
+            this.dialog = true;
+            this.movieInfo = movie;
         },
     },
 };
