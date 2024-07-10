@@ -36,7 +36,7 @@ export default {
     methods: {
         async fetchLogisticRegressionData () {
             try {
-                const response = await axios.get('http://192.168.0.55:33333/logistic-regression');  // 데이터 엔드포인트에 맞게 URL 수정
+                const response = await axios.get('http://localhost:33333/lr-train');  // 데이터 엔드포인트에 맞게 URL 수정
                 const data = response.data;
                 console.log('result:', data);
 
@@ -108,8 +108,12 @@ export default {
                 .y(d => y(d[1]));
 
             const decisionBoundary = this.x_values.map((x_value, i) => [x_value, this.y_values[i]]);
+            
+            // NaN 값을 확인하고 필터링
+            const validDecisionBoundary = decisionBoundary.filter(d => !isNaN(d[0]) && !isNaN(d[1]));
+
             g.append('path')
-                .datum(decisionBoundary)
+                .datum(validDecisionBoundary)
                 .attr('d', line)
                 .attr('stroke', 'red')
                 .attr('stroke-width', 2)
@@ -135,9 +139,7 @@ export default {
 
 <style scoped>
 .chart-container {
-    width: 80%;
-    height: 60%;
-    margin: auto;
+    
 }
 
 .chart-wrapper {
