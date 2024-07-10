@@ -1,165 +1,211 @@
 <template>
-    <v-container>
-        <h2>영화 상세 정보 보기</h2>
-        <v-card v-if="movie">
-            <v-card-title>영화 정보</v-card-title>
-            <v-card-text>
-                <v-container>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="movie.movieName" readonly label="영화 이름"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="movie.movieReleaseDate" readonly label="영화 개봉일"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="movie.movieFilmRating" readonly label="영상물 등급"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="movie.movieGenre" readonly label="영화 장르"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="movie.movieCountry" readonly label="영화 제작 국가"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="movie.movieRunningTime" readonly label="영화 상영 시간"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-textarea v-model="movie.movieSummary" readonly label="영화 줄거리"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="movie.moviePrice" readonly label="영화 가격" type="number"/>
-                        </v-col>
-                    </v-row>
+    <v-dialog v-bind="$attrs" persistent width="auto">
+        <v-card
+            width="calc(100vw - 64px)"
+            height="calc(100vh - 64px)"
+            :style="{
+                background: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${getImageUrl(
+                    movie.movieImage
+                )})`,
+            }"
+        >
+            <div class="card-contents-wrapper">
+                <div class="button-box">
+                    <v-btn
+                        icon="mdi-window-close"
+                        size="large"
+                        @click.stop="$emit('close')"
+                    ></v-btn>
+                </div>
 
-                    <v-row>
-                        <v-col cols="12">
-                            <v-img :src="getMovieImageUrl(movie.movieImage)" aspect-ratio="1" class="grey lighten-2">
-                                <template v-slot:placeholder>
-                                    <v-row class="fill-height ma-0" align="center" justify="center">
-                                        <v-progress-circular indeterminate color="grey lighten-5"/>
-                                    </v-row>
-                                </template>
-                            </v-img>
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-card-text>
+                <div class="contents-box">
+                    <div class="contents-left">
+                        <div>
+                            <p>
+                                <span class="mdi mdi-star"></span>
+                                {{ movie.movieFilmRating }}
+                            </p>
+                            <p>{{ movie.movieName }}</p>
+                            <p>{{ movie.movieGenre }}</p>
+                        </div>
+
+                        <div>
+                            <v-btn
+                                icon="mdi-play mdi-48px"
+                                size="x-large"
+                            ></v-btn>
+                            <p>재생하기</p>
+                        </div>
+
+                        <div>{{ omitContents(movie.movieSummary) }}</div>
+                    </div>
+
+                    <div class="contents-right">
+                        <div>
+                            <img
+                                :src="getImageUrl(movie.movieImage)"
+                                width="100%"
+                                height="100%"
+                            />
+                        </div>
+
+                        <div>
+                            <div>
+                                <p>출시</p>
+                                <p>{{ movie.movieReleaseDate }}</p>
+                            </div>
+                            <div>
+                                <p>시간</p>
+                                <p>{{ movie.movieRunningTime }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </v-card>
-
-        <v-alert v-else type="info">현재 등록된 영화가 없습니다!</v-alert>
-        <div class="button-container">
-            <v-btn color="primary" @click="onPurchase" class="action-button">
-                <v-icon>mdi-cart</v-icon>
-                <span class="button-text">구매하기</span>
-            </v-btn>
-            <v-btn color="success" @click="onAddToCart" class="action-button">
-                <v-icon>mdi-cart-plus</v-icon>
-                <span class="button-text">장바구니에 추가</span>
-            </v-btn>
-            <router-link :to="{ name: 'MovieListPage' }" 
-                            class="router-link no-underline">
-                <v-btn color="secondary" class="action-button">
-                    <v-icon>mdi-arrow-left</v-icon>
-                    <span class="button-text">목록으로 돌아가기</span>
-                </v-btn>
-            </router-link>
-        </div>
-    </v-container>
+    </v-dialog>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-
-const movieModule = 'movieModule'
-const cartModule = 'cartModule'
-
 export default {
     props: {
-        movieId: {
-            type: String,
+        movie: {
+            type: Object,
             required: true,
-        }
+        },
     },
-    computed: {
-        ...mapState(movieModule, ['movie'])
+
+    data() {
+        return {};
     },
+
     methods: {
-        ...mapActions(movieModule, ['requestMovieToDjango']),
-        ...mapActions(cartModule, ['requestAddCartToDjango']),
-        async onPurchase () {
-            console.log('구매하기 버튼 눌렀음')
+        getImageUrl(imageName) {
+            return require(`@/assets/images/uploadImages/${imageName}`);
         },
-        async onAddToCart () {
-            console.log('장바구니에 추가 버튼 눌렀음')
-            try {
-                const cartData = {
-                    movieId: this.movie.movieId,
-                    movieName: this.movie.movieName,
-                    moviePrice: this.movie.moviePrice,
-                    quantity: 1, // 임시로 기본 수량 1로 설정
-                };
-                await this.requestAddCartToDjango(cartData);
-                this.$router.push({ name: 'CartListPage' });
-            } catch (error) {
-                console.log('장바구니 추가 과정에서 에러 발생:', error);
+
+        omitContents(contents) {
+            if (contents.length > 240) {
+                contents = contents.substr(0, 240) + "...";
             }
-        },
-        getMovieImageUrl (imageName) {
-            console.log('imageName:', imageName)
-            return require('@/assets/images/uploadImages/' + imageName)
+
+            return contents;
         },
     },
-    created () {
-        this.requestMovieToDjango(this.movieId)
-    },
-}
+};
 </script>
 
 <style scoped>
-.action-button {
+.v-card {
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: top center !important;
+}
+
+.card-contents-wrapper {
+    height: 100%;
+    padding: 16px;
+}
+
+.button-box {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-box .v-btn {
+    color: #fff;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+}
+
+.contents-box {
+    height: calc(100% - 168px);
+    display: flex;
+    padding-top: 80px;
+    color: #fff;
+}
+
+.contents-left {
+    max-width: 65%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.contents-left > div:first-of-type {
+    display: flex;
+    flex-direction: column;
+}
+
+.contents-left > div:first-of-type > p:first-child {
+    display: flex;
+    width: 60px;
+    padding: 6px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.15)
+    );
+}
+
+.contents-left > div:first-child > p:nth-child(2) {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.contents-left > div:first-child > p:nth-child(3) {
+    margin-bottom: 120px;
+    font-size: 18px;
+    color: #bdbdbd;
+}
+
+.contents-left > div:nth-child(2) {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
+}
+
+.contents-left > div:nth-child(2) > .v-btn {
+    color: #000;
+    margin-right: 12px;
+}
+
+.contents-left > div:nth-child(2) > p:first-of-type {
+    font-size: 36px;
     font-weight: bold;
-    padding: 0.75rem 1rem;
-    margin: 0.5rem;
-    border-radius: 8px;
 }
 
-.button-text {
-    margin-left: 0.5rem;
+.contents-left > div:nth-child(3) {
+    font-size: 18px;
 }
 
-.button-container {
+.contents-right {
+    width: calc(35% - 32px);
     display: flex;
-    justify-content: center;
-    margin-top: 1rem;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
 }
 
-/* 하이퍼링크 스타일 제거 */
-.no-underline {
-    text-decoration: none;
+.contents-right > div:first-of-type {
+    width: 300px;
+    height: 420px;
 }
 
-/* router-link 스타일 재정의 */
-.router-link {
-    text-decoration: none;
-    color: inherit;
+.contents-right > div:first-of-type > img:first-of-type {
+    object-fit: fill;
+}
+
+.contents-right > div:nth-of-type(2) > div:first-of-type,
+.contents-right > div:nth-of-type(2) > div:nth-of-type(2) {
+    width: 300px;
+    display: flex;
+    font-size: 18px;
+}
+
+.contents-right > div:nth-of-type(2) > div:first-of-type > p:first-of-type,
+.contents-right > div:nth-of-type(2) > div:nth-of-type(2) > p:first-of-type {
+    margin-right: 36px;
+    font-weight: bold;
 }
 </style>
