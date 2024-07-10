@@ -5,7 +5,7 @@
                 <v-card>
                     <v-card-title>주문 상세 내역 보기</v-card-title>
                     <v-card-text>
-                        <v-table v-if="order">
+                        <v-table v-if="purchase">
                             <thead>
                             <tr>
                                 <th>foodorderId</th>
@@ -13,7 +13,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in order.items" :key="item.productId">
+                                <tr v-for="item in purchase" :key="item.purchase">
                                     <td>{{ item.foodorderId }}</td>
                                     <td>{{ item.drinkorderId }}</td>
                                 </tr>
@@ -75,7 +75,9 @@ export default {
             console.log('OrderReadPage purchaseId:', purchaseId)
 
             try {
-                const response = await this.requestReadPurchaseToDjango({ purchaseId }).then((res) => console.log("11231123",res))
+                const response = await this.requestReadPurchaseToDjango({ purchaseId })
+                this.purchase = response
+                console.log("purchaseData:", this.purchase)
             } catch (error) {
                 console.error('주문 내역 확인 중 에러:', error)
             }

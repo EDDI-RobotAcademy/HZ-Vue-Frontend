@@ -143,7 +143,7 @@ const actions: OrderActions = {
                 await axiosInst.djangoAxiosInst.post('/purchase/create', requestData);
             console.log('response data:', response.data)
 
-            return response.data;
+            return response.data.purchaseId;
         } catch (error) {
             console.error('Error creating purchase:', error);
             throw error;
@@ -196,7 +196,7 @@ const actions: OrderActions = {
             throw error
         }
     },
-    async requestReadPurchaseToDjango({ commit }, payload) {
+    async requestReadPurchaseToDjango({ state }, payload) {
         try {
             const userToken = localStorage.getItem('userToken');
             if (!userToken) {
@@ -213,7 +213,10 @@ const actions: OrderActions = {
             const response =
                 await axiosInst.djangoAxiosInst.post(`/purchase/read/${purchaseId}`, requestData)
             
-            commit(SET_PURCHASE_DATA, response.data)
+            console.log("response: ", response)
+            console.log("response.data: ", response.data)
+            
+            // commit(SET_PURCHASE_DATA, response.data)
             return response.data
         } catch (error) {
             console.error('주문 내역 요청 중 에러:', error)
