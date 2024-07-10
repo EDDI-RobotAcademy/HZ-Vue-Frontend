@@ -149,7 +149,7 @@
                                 'linear-gradient(to right, rgba(32, 80, 157), rgba(104, 59, 221))',
                         }"
                     >
-                        '베이직'<br />1080p
+                        베이직<br />1080p
                     </v-card-title>
                     <div
                         style="
