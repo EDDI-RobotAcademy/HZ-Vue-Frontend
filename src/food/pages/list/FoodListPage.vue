@@ -213,14 +213,24 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    font-size: 24px;
     color: #fff;
+}
+
+.swiper-slide > div:nth-of-type(2) > p:first-of-type {
+    font-size: 32px;
+}
+.swiper-slide > div:nth-of-type(2) > p:nth-of-type(2) {
+    font-size: 14px;
+}
+
+.swiper-slide > div:nth-of-type(2) > p:nth-of-type(3) {
+    font-size: 24px;
 }
 
 .swiper-slide > div:nth-of-type(2) > p:first-of-type,
 .swiper-slide > div:nth-of-type(2) > p:nth-of-type(2),
 .swiper-slide > div:nth-of-type(2) > p:nth-of-type(3) {
-    padding: 15px;
+    padding: 5px;
 }
 
 .swiper-slide > div:nth-of-type(2) > div:first-of-type {

@@ -1,98 +1,286 @@
-<template lang="">
-    <v-container>
-        <h2>Drink List</h2>
-        <div style="text-align: left; margin: 15px;">
-            <router-link :to="{ name: 'DrinkRegisterPage' }">
-                음료 등록
-            </router-link>
+<template>
+    <div class="container">
+        <div class="contents-wrapper">
+            <div>
+                <p>영화에는 역시 마실거리 !</p>
+                <p>영화를 시청하며</p>
+                <p>시~원하고 행복하게</p>
+                <p>마실거리를 즐겨보세요 !</p>
+            </div>
+
+            <swiper
+                :loop="true"
+                :spaceBetween="10"
+                :thumbs="{ swiper: thumbsSwiper }"
+                :modules="modules"
+                class="mySwiper2"
+            >
+                <swiper-slide v-for="drink in drinkList" :key="drink.drinkId">
+                    <div>
+                        <img
+                            :src="getImageUrl(drink.drinkImage)"
+                            width="100%"
+                            height="100%"
+                        />
+                    </div>
+                    <div>
+                        <p>{{ drink.drinkName }}</p>
+                        <p>{{ drink.drinkDescription }}</p>
+                        <p>{{ Number(drink.drinkPrice) }}원</p>
+                        <div>
+                            <v-btn @click="onPurchase" prepend-icon="mdi-cart">
+                                구매하기
+                            </v-btn>
+                            <v-btn
+                                @click="onAddToCart(drink)"
+                                prepend-icon="mdi-cart-plus"
+                            >
+                                장바구니에 추가
+                            </v-btn>
+                        </div>
+                    </div>
+                </swiper-slide>
+            </swiper>
+            <swiper
+                @swiper="setThumbsSwiper"
+                :loop="true"
+                :spaceBetween="10"
+                :slidesPerView="4.3"
+                :freeMode="true"
+                :modules="modules"
+                class="mySwiper"
+            >
+                <swiper-slide v-for="drink in drinkList" :key="drink.drinkId">
+                    <img :src="getImageUrl(drink.drinkImage)" />
+                </swiper-slide>
+            </swiper>
         </div>
-        <v-row v-if="drinkList.length > 0">
-            <v-col v-for="(drink, index) in drinkList" :key=index cols="12" sm="6" md="4" lg="3">
-                <v-card @click="goToDrinkReadPage(drink.drinkId)">
-                    <v-img :src="getImageUrl(drink.drinkImage)" aspect-ratio="1" class="grey lighten-2">
-                        <template v-slot:placeholder>
-                            <v-row class="fill-height ma-0" align="center" justify="center">
-                                <v-progress-circular indeterminate color="grey lighten-5"/>
-                            </v-row>
-                        </template>
-                    </v-img>
-                    <v-card-title>{{ drink.drinkName }}</v-card-title>
-                    <v-card-subtitle>{{ drink.drinkPrice }}</v-card-subtitle>
-                </v-card>
-            </v-col>
-        </v-row>
-        <v-row v-else>
-            <!-- Bootstrap 등에서 기본적으로 화면을 12개의 열로 구성함(전체 쓰겠단 소리) -->
-            <v-col cols="12" class="text-center">
-                <v-alert type="info">등록된 음료가 없습니다!</v-alert>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12" class="text-center">
-                <v-img src="@/assets/images/fixed/waiting.png" aspect-ratio="1" class="grey lighten-2">
-                    <template v-slot:placeholder>
-                        <v-row class="fill-height ma-0" align="center" justify="center">
-                            <v-progress-circular indeterminate color="grey lighten-5"/>
-                        </v-row>
-                    </template>
-                </v-img>
-            </v-col>
-        </v-row>
-    </v-container>
+    </div>
 </template>
 
-// npm install axios --legacy-peer-deps
-
 <script>
-// 이것은 vuex 때문에 사용 가능
-import { mapActions, mapState } from 'vuex'
+import { ref } from "vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
 
-const drinkModule = 'drinkModule'
+import "swiper/css";
+
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
+
+import { FreeMode, Thumbs } from "swiper/modules";
+import { mapActions, mapState } from "vuex";
+
+const drinkModule = "drinkModule";
+const cartModule = "cartModule";
 
 export default {
     components: {
-        // RouterLink
+        Swiper,
+        SwiperSlide,
     },
-    computed: {
-        ...mapState(drinkModule, ['drinkList']),
-        pagedItems () {
-            const startIdx = (this.pagination.page - 1) * this.perPage
-            const endIdx = startIdx + this.perPage
-            return this.drinkList.slice(startIdx, endIdx)
-        }
-    },
-    mounted () {
-        this.requestDrinkListToDjango()
-    },
-    methods: {
-        ...mapActions(drinkModule, ['requestDrinkListToDjango']),
-        getImageUrl (imageName) {
-            return require('@/assets/images/uploadImages/' + imageName)
-        },
-        goToDrinkReadPage (drinkId) {
-            this.$router.push({
-                name: 'DrinkReadPage',
-                params: { drinkId: drinkId }
-            })
-        }
-    },
-    data () {
+
+    setup() {
+        let thumbsSwiper = ref(null);
+
+        const setThumbsSwiper = (swiper) => {
+            thumbsSwiper.value = swiper;
+        };
+
         return {
-            headerTitle: [
-                {
-                    title: 'No',
-                    align: 'start',
-                    sortable: true,
-                    key: 'drinkId',
-                },
-                { title: '음료 이름', align: 'end', key: 'drinkName' },
-                { title: '음료 가격', align: 'end', key: 'drinkPrice' },
-            ],
-            perPage: 5,
-            pagination: {
-                page: 1,
+            thumbsSwiper,
+            setThumbsSwiper,
+            modules: [FreeMode, Thumbs],
+        };
+    },
+
+    computed: {
+        ...mapState(drinkModule, ["drinkList", "drink"]),
+    },
+
+    mounted() {
+        this.requestDrinkListToDjango();
+    },
+
+    methods: {
+        ...mapActions(drinkModule, [
+            "requestDrinkListToDjango",
+            "requestDrinkToDjango",
+        ]),
+        ...mapActions(cartModule, ["requestAddDrinkcartToDjango"]),
+
+        async onPurchase() {
+            console.log("구매하기 버튼 눌렀음");
+        },
+
+        async onAddToCart(drink) {
+            console.log("장바구니에 추가 버튼 눌렀음");
+            try {
+                const drinkcartData = {
+                    drinkId: drink.drinkId,
+                    drinkName: drink.drinkName,
+                    drinkPrice: drink.drinkPrice,
+                    drinkquantity: 1, // 임시로 기본 수량 1로 설정
+                };
+                await this.requestAddDrinkcartToDjango(drinkcartData);
+                this.$router.push({ name: "CartListPage" });
+            } catch (error) {
+                console.log("장바구니 추가 과정에서 에러 발생:", error);
             }
-        }
-    }
-}
+        },
+
+        getImageUrl(imageName) {
+            return require("@/assets/images/uploadImages/" + imageName);
+        },
+    },
+};
 </script>
+
+<style scoped>
+.container {
+    width: 100%;
+    max-width: 100vw;
+    height: 100%;
+    padding: 20px 40px 20px 40px;
+    background: linear-gradient(
+            rgba(255, 255, 255, 0.4),
+            rgba(255, 255, 255, 0.4)
+        ),
+        url("@/assets/background_image/main_image.png");
+    background-size: cover;
+}
+
+.contents-wrapper {
+    height: calc(100vh - 124px);
+}
+
+.contents-wrapper > div:first-of-type {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding-left: 80px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)),
+        url(@/assets/background_image/drink_image.jpg);
+    background-size: cover;
+}
+
+.contents-wrapper > div:first-of-type > p:first-of-type {
+    color: #fff;
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.contents-wrapper > div:first-of-type > p:nth-of-type(2),
+.contents-wrapper > div:first-of-type > p:nth-of-type(3),
+.contents-wrapper > div:first-of-type > p:nth-of-type(4) {
+    color: #fff;
+    font-size: 18px;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide:first-of-type {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.swiper-slide > div:first-of-type {
+    width: 60%;
+    height: 100%;
+}
+
+.swiper-slide > div:nth-of-type(2) {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    color: #fff;
+}
+
+.swiper-slide > div:nth-of-type(2) > p:first-of-type {
+    font-size: 32px;
+}
+.swiper-slide > div:nth-of-type(2) > p:nth-of-type(2) {
+    font-size: 14px;
+}
+
+.swiper-slide > div:nth-of-type(2) > p:nth-of-type(3) {
+    font-size: 24px;
+}
+
+.swiper-slide > div:nth-of-type(2) > p:first-of-type,
+.swiper-slide > div:nth-of-type(2) > p:nth-of-type(2),
+.swiper-slide > div:nth-of-type(2) > p:nth-of-type(3) {
+    padding: 5px;
+}
+
+.swiper-slide > div:nth-of-type(2) > div:first-of-type {
+    display: flex;
+    justify-content: space-around;
+}
+
+.swiper-slide > div:nth-of-type(2) > div:first-of-type > .v-btn {
+    width: 30%;
+    font-weight: bold;
+    color: #000;
+    background-color: #f6c748;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.swiper {
+    width: 100%;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.swiper-slide {
+    background-size: cover;
+    background-position: center;
+}
+
+.mySwiper2 {
+    height: 50%;
+    width: 100%;
+}
+
+.mySwiper {
+    height: 20%;
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+.mySwiper .swiper-slide {
+    width: 25%;
+    height: 100%;
+    opacity: 0.6;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+    opacity: 1;
+}
+</style>
